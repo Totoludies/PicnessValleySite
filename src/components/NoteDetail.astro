@@ -1,0 +1,67 @@
+---
+// Une note de version.
+import { render } from 'astro:content';
+import Site from '../layouts/Site.astro';
+import { routes, t, formatDate, type Lang } from '../i18n';
+import { noteSlug, versionRange, type Note } from '../lib/notes';
+
+interface Props {
+	lang: Lang;
+	note: Note;
+}
+
+const { lang, note } = Astro.props;
+const s = t(lang);
+const r = routes[lang];
+const other = lang === 'fr' ? routes.en.notes : routes.fr.notes;
+const { Content } = await render(note);
+---
+
+<Site lang={lang} title={note.data.title} description={note.data.summary} alternate={`${other}${noteSlug(note)}/`}>
+	<article class="wrap note">
+		<p class="note__back"><a href={r.notes}>{s.notesBack}</a></p>
+		<header>
+			<p class="note__meta">
+				<span class="badge">{s.versions} {versionRange(note)}</span>
+				<time datetime={note.data.date.toISOString()}>{formatDate(note.data.date, lang)}</time>
+			</p>
+			<h1>{note.data.title}</h1>
+			<p class="note__summary">{note.data.summary}</p>
+		</header>
+		<div class="prose">
+			<Content />
+		</div>
+	</article>
+</Site>
+
+<style>
+	.note {
+		max-width: 780px;
+		padding-block: 32px 80px;
+	}
+
+	.note__back {
+		margin: 0 0 24px;
+		font-weight: 700;
+	}
+
+	.note__meta {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 6px 12px;
+		align-items: center;
+		color: var(--pv-ink-soft);
+		margin: 0 0 12px;
+	}
+
+	.note h1 {
+		font-size: clamp(2rem, 5vw, 3rem);
+		color: var(--pv-wood-dark);
+	}
+
+	.note__summary {
+		font-size: 1.2rem;
+		color: var(--pv-ink-soft);
+		margin: 0;
+	}
+</style>

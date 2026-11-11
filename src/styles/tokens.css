@@ -1,0 +1,30 @@
+/* Couleurs et polices de Picness Valley, partagées par le site et le wiki. */
+@font-face {
+	font-family: 'Picness Valley';
+	src: url('/fonts/PicnessValley-Regular.ttf') format('truetype');
+	font-display: swap;
+}
+
+:root {
+	--pv-ink: #2b1d14;
+	--pv-ink-soft: #5a4433;
+	--pv-wood: #7a5a3f;
+	--pv-wood-dark: #4a3324;
+	--pv-wood-light: #c9a173;
+	--pv-parchment: #f2d6a0;
+	--pv-parchment-light: #f8e8c6;
+	--pv-parchment-dark: #d8b075;
+	--pv-sky: #4b7fae;
+	--pv-sky-dark: #2f5b84;
+	--pv-sky-light: #d6e8f5;
+	--pv-leaf: #4f8a2e;
+	--pv-leaf-dark: #2f5e1a;
+	--pv-leaf-light: #9bcb5e;
+	--pv-berry: #c8313a;
+	--pv-gold: #e6b84a;
+
+	--pv-font-title: 'Picness Valley', 'Georgia', serif;
+	--pv-font-body: 'Nunito Variable', 'Nunito', system-ui, sans-serif;
+	--pv-radius: 14px;
+	--pv-shadow: 0 6px 0 rgba(43, 29, 20, 0.25), 0 12px 30px rgba(43, 29, 20, 0.18);
+}

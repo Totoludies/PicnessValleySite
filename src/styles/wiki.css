@@ -1,0 +1,102 @@
+/* Habillage du Picness Wiki (Starlight) aux couleurs du jeu. */
+
+/* Thème sombre (par défaut de Starlight) : bois foncé. */
+:root {
+	--sl-font: var(--pv-font-body);
+	--sl-color-accent-low: #2f4a1f;
+	--sl-color-accent: #7fb84a;
+	--sl-color-accent-high: #d4ecb3;
+	--sl-color-white: #fbf1dc;
+	--sl-color-gray-1: #eadbbd;
+	--sl-color-gray-2: #cdb995;
+	--sl-color-gray-3: #a68f6c;
+	--sl-color-gray-4: #6f5a42;
+	--sl-color-gray-5: #4a3a2a;
+	--sl-color-gray-6: #33271c;
+	--sl-color-black: #241b13;
+}
+
+/* Thème clair : parchemin. */
+:root[data-theme='light'] {
+	--sl-color-accent-low: #dcefc4;
+	--sl-color-accent: #3f7a1f;
+	--sl-color-accent-high: #234412;
+	--sl-color-white: #2b1d14;
+	--sl-color-gray-1: #3d2c20;
+	--sl-color-gray-2: #57432f;
+	--sl-color-gray-3: #7d6447;
+	--sl-color-gray-4: #a88d68;
+	--sl-color-gray-5: #d8bf94;
+	--sl-color-gray-6: #f0deb8;
+	--sl-color-gray-7: #f7ebd2;
+	--sl-color-black: #fbf4e4;
+}
+
+/* En-tête : planche de bois du jeu, dans les deux thèmes. */
+.header {
+	background: var(--pv-wood) url('/ui/plank.webp') center / cover !important;
+	border-bottom: 3px solid var(--pv-ink) !important;
+}
+
+.header .site-title {
+	color: var(--pv-parchment-light);
+	font-family: var(--pv-font-title);
+	font-size: 1.5rem;
+	font-weight: normal;
+	text-shadow: 0 2px 0 var(--pv-ink);
+}
+
+.header .site-title::before {
+	content: '';
+	width: 30px;
+	height: 30px;
+	margin-right: 0.4rem;
+	background: url('/favicon.png') center / contain no-repeat;
+}
+
+.header button,
+.header select,
+.header starlight-theme-select,
+.header starlight-lang-select {
+	color: var(--pv-parchment-light);
+}
+
+/* Champ de recherche lisible sur la planche. */
+.header site-search button[data-open-modal] {
+	background: rgba(43, 29, 20, 0.4);
+	border-color: var(--pv-wood-light);
+	color: var(--pv-parchment-light);
+}
+
+.header site-search button[data-open-modal] kbd {
+	background: rgba(43, 29, 20, 0.5);
+	color: var(--pv-parchment);
+}
+
+/* Titres dans la police du jeu. */
+.sl-markdown-content :is(h1, h2, h3),
+h1#_top {
+	font-family: var(--pv-font-title);
+	font-weight: normal;
+	letter-spacing: 0.01em;
+}
+
+/* Icônes du jeu dans les tableaux et listes du wiki. */
+.sl-markdown-content img.pv-icon {
+	display: inline-block;
+	width: 44px;
+	height: 44px;
+	object-fit: contain;
+	vertical-align: middle;
+	margin: 0;
+}
+
+.sl-markdown-content table img.pv-icon {
+	width: 48px;
+	height: 48px;
+}
+
+.sl-markdown-content td:first-child:has(img) {
+	width: 64px;
+	text-align: center;
+}

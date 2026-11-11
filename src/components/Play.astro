@@ -1,0 +1,95 @@
+---
+// Page « Jouer » : la build WebGL dans un cadre, ou un message si elle n'est pas encore en ligne.
+import Site from '../layouts/Site.astro';
+import { routes, t, type Lang } from '../i18n';
+import { PLAY_URL } from '../site.config';
+
+interface Props {
+	lang: Lang;
+}
+
+const { lang } = Astro.props;
+const s = t(lang);
+const r = routes[lang];
+---
+
+<Site lang={lang} title={s.playTitle} alternate={lang === 'fr' ? routes.en.play : routes.fr.play}>
+	<div class="page-head wrap">
+		<h1>{s.playTitle}</h1>
+		<p>{s.playIntro}</p>
+	</div>
+	<section class="wrap play">
+		{PLAY_URL ? (
+			<>
+				<div class="play__frame">
+					<iframe src={PLAY_URL} title="Picness Valley" allow="fullscreen; autoplay; gamepad" allowfullscreen loading="eager" />
+				</div>
+				<p class="play__full"><a class="btn" href={PLAY_URL} target="_blank" rel="noopener">{s.playFullscreen} ↗</a></p>
+			</>
+		) : (
+			<div class="parchment play__soon">
+				<h2 class="parchment__title">{s.alpha}</h2>
+				<img src="/icons/needs/energy.webp" alt="" width="96" height="96" />
+				<h3>{s.playSoon}</h3>
+				<p>{s.playSoonText}</p>
+				<div class="play__links">
+					<a class="btn" href={r.wiki}>{s.navWiki}</a>
+					<a class="btn" href={r.notes}>{s.navNotes}</a>
+				</div>
+			</div>
+		)}
+	</section>
+</Site>
+
+<style>
+	.play {
+		padding-block: 24px 80px;
+	}
+
+	.play__frame {
+		aspect-ratio: 16 / 9;
+		border: 4px solid var(--pv-ink);
+		border-radius: 16px;
+		overflow: hidden;
+		background: #000;
+		box-shadow: var(--pv-shadow);
+	}
+
+	.play__frame iframe {
+		width: 100%;
+		height: 100%;
+		border: 0;
+		display: block;
+	}
+
+	.play__full {
+		text-align: center;
+		margin-top: 22px;
+	}
+
+	.play__soon {
+		max-width: 620px;
+		margin: 24px auto 0;
+		text-align: center;
+	}
+
+	.play__soon img {
+		margin: 6px auto 0;
+		width: 96px;
+		height: 96px;
+		object-fit: contain;
+	}
+
+	.play__soon h3 {
+		margin: 12px 0 4px;
+		color: var(--pv-wood-dark);
+	}
+
+	.play__links {
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: center;
+		gap: 12px;
+		margin: 18px 0 8px;
+	}
+</style>

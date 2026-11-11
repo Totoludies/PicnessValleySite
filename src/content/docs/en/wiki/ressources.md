@@ -1,0 +1,43 @@
+---
+title: Resources
+description: Wood, stone, food and stumps in Picness Valley.
+sidebar:
+  order: 4
+---
+
+The counter at the top left of the screen shows what the village holds.
+
+## Items
+| | Resource | Where it comes from | What it is for |
+|---|---|---|---|
+| <img class="pv-icon" src="/icons/items/log.webp" alt="" /> | **Logs** | Trees cut by foresters | Building; split into firewood |
+| <img class="pv-icon" src="/icons/items/wood.webp" alt="" /> | **Firewood** | Woodcutting Workshop (1 log = 2 firewood) | Heating houses |
+| <img class="pv-icon" src="/icons/items/stone.webp" alt="" /> | **Stone** | Rocks broken by miners | Building, paving roads |
+| <img class="pv-icon" src="/icons/items/berry.webp" alt="" /> | **Berries** | Bushes, picked by gatherers | Food |
+| <img class="pv-icon" src="/icons/items/potato.webp" alt="" /> | **Potatoes** | Fields, harvested in autumn | Food |
+| <img class="pv-icon" src="/icons/items/stump.webp" alt="" /> | **Stumps** | Bushes dug up by gatherers | Replanting bushes around a Berry Hut |
+
+:::caution[No harvest without room]
+Nothing is harvested while no storage or building site has room for it. Build a storage early.
+:::
+
+## On the map
+### Trees
+A felled tree gives logs, left on the ground and then stored. Young trees grow for **one year** before they can be cut. A new young tree sprouts at the start of every summer.
+
+### Rocks
+| Rock | Stones |
+|---|---|
+| Large | 10 |
+| Medium | 5 |
+| Small | 1 |
+
+Each harvest gives 1 stone, and the rock **shrinks** as it is broken. It disappears once empty.
+
+### Berry bushes
+- A full bush holds **5 berries**; each picking takes 1, and you can see the berries disappear one by one.
+- An empty bush fills up again at the **start of summer**. A new bush grows about every other summer.
+- From its window, a bush can be **dug up** ("Dig up the stump" button): a gatherer brings a stump back to the Berry Hut.
+- From a Berry Hut's card, **"Plant a bush"** places new bushes inside its circle. They start without berries.
+
+Clicking a tree, a rock or a bush opens its window, showing what it has left.

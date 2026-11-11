@@ -1,0 +1,113 @@
+---
+// Liste des notes de version, la plus récente d'abord.
+import Site from '../layouts/Site.astro';
+import { routes, t, formatDate, type Lang } from '../i18n';
+import { getNotes, noteSlug, versionRange } from '../lib/notes';
+
+interface Props {
+	lang: Lang;
+}
+
+const { lang } = Astro.props;
+const s = t(lang);
+const r = routes[lang];
+const notes = await getNotes(lang);
+---
+
+<Site lang={lang} title={s.navNotes} alternate={lang === 'fr' ? routes.en.notes : routes.fr.notes}>
+	<div class="page-head wrap">
+		<h1>{s.navNotes}</h1>
+		<p>{s.notesIntro}</p>
+	</div>
+	<ol class="wrap timeline">
+		{notes.map((note) => (
+			<li class="timeline__item">
+				<a class="timeline__card" href={`${r.notes}${noteSlug(note)}/`}>
+					<span class="timeline__meta">
+						<span class="badge">{s.versions} {versionRange(note)}</span>
+						<time datetime={note.data.date.toISOString()}>{formatDate(note.data.date, lang)}</time>
+					</span>
+					<h2>{note.data.title}</h2>
+					<p>{note.data.summary}</p>
+				</a>
+			</li>
+		))}
+	</ol>
+</Site>
+
+<style>
+	.timeline {
+		list-style: none;
+		padding: 24px 0 80px;
+		max-width: 780px;
+		position: relative;
+	}
+
+	.timeline::before {
+		content: '';
+		position: absolute;
+		left: 14px;
+		top: 24px;
+		bottom: 80px;
+		width: 4px;
+		border-radius: 4px;
+		background: var(--pv-wood-light);
+	}
+
+	.timeline__item {
+		position: relative;
+		padding-left: 48px;
+	}
+
+	.timeline__item + .timeline__item {
+		margin-top: 22px;
+	}
+
+	.timeline__item::before {
+		content: '';
+		position: absolute;
+		left: 4px;
+		top: 26px;
+		width: 24px;
+		height: 24px;
+		border-radius: 50%;
+		background: var(--pv-leaf);
+		border: 3px solid var(--pv-ink);
+	}
+
+	.timeline__card {
+		display: block;
+		padding: 20px 24px;
+		color: var(--pv-ink);
+		text-decoration: none;
+		background: #fffaf0;
+		border: 3px solid var(--pv-ink);
+		border-radius: var(--pv-radius);
+		box-shadow: 0 5px 0 var(--pv-ink);
+		transition: transform 0.12s ease;
+	}
+
+	.timeline__card:hover {
+		transform: translateY(-3px);
+	}
+
+	.timeline__meta {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 6px 12px;
+		align-items: center;
+		color: var(--pv-ink-soft);
+		font-size: 0.92rem;
+	}
+
+	.timeline__card h2 {
+		margin: 10px 0 6px;
+		font-size: 1.7rem;
+		color: var(--pv-wood-dark);
+	}
+
+	.timeline__card p {
+		margin: 0;
+		color: var(--pv-ink-soft);
+	}
+</style>

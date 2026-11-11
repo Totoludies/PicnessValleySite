@@ -1,0 +1,43 @@
+---
+// Remplace les icônes sociales de Starlight : liens vers les pages du site, dans la langue du wiki.
+import { routes, t, type Lang } from '../i18n';
+
+const lang: Lang = Astro.locals.starlightRoute.locale === 'en' ? 'en' : 'fr';
+const s = t(lang);
+const r = routes[lang];
+---
+
+<nav class="wiki-nav" aria-label="Picness Valley">
+	<a href={r.home}>Picness Valley</a>
+	<a href={r.play}>{s.navPlay}</a>
+	<a href={r.notes}>{s.navNotes}</a>
+</nav>
+
+<style>
+	.wiki-nav {
+		display: flex;
+		gap: 4px;
+	}
+
+	.wiki-nav a {
+		padding: 4px 10px;
+		border-radius: 999px;
+		color: var(--pv-parchment-light);
+		font-weight: 700;
+		font-size: 0.92rem;
+		text-decoration: none;
+		white-space: nowrap;
+		text-shadow: 0 1px 0 var(--pv-ink);
+	}
+
+	.wiki-nav a:hover {
+		background: rgba(43, 29, 20, 0.35);
+		box-shadow: 0 0 0 2px var(--pv-gold) inset;
+	}
+
+	@media (max-width: 72rem) {
+		.wiki-nav a:not(:first-child) {
+			display: none;
+		}
+	}
+</style>

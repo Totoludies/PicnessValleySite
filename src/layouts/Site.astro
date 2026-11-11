@@ -1,0 +1,75 @@
+---
+// Mise en page des pages du site (accueil, jouer, notes de version). Le wiki a la sienne (Starlight).
+import '@fontsource-variable/nunito';
+import '../styles/tokens.css';
+import '../styles/site.css';
+import { routes, t, type Lang } from '../i18n';
+
+interface Props {
+	lang: Lang;
+	title?: string;
+	description?: string;
+	/** Adresse de la même page dans l'autre langue. */
+	alternate: string;
+	/** Image de partage (adresse absolue ou dans public/). */
+	image?: string;
+}
+
+const { lang, title, description, alternate, image } = Astro.props;
+const s = t(lang);
+const r = routes[lang];
+const fullTitle = title ? `${title} · Picness Valley` : 'Picness Valley';
+const desc = description ?? s.siteDescription;
+const path = Astro.url.pathname;
+const current = (href: string) => (path === href || (href !== r.home && path.startsWith(href)) ? 'page' : undefined);
+const ogImage = image ? new URL(image, Astro.site ?? Astro.url).href : undefined;
+---
+
+<!doctype html>
+<html lang={lang}>
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<title>{fullTitle}</title>
+		<meta name="description" content={desc} />
+		<link rel="icon" type="image/png" href="/favicon.png" />
+		<link rel="alternate" hreflang={lang === 'fr' ? 'en' : 'fr'} href={alternate} />
+		<meta property="og:title" content={fullTitle} />
+		<meta property="og:description" content={desc} />
+		<meta property="og:type" content="website" />
+		{ogImage && <meta property="og:image" content={ogImage} />}
+		<meta name="twitter:card" content="summary_large_image" />
+		<meta name="theme-color" content="#4a3324" />
+	</head>
+	<body>
+		<header class="topbar">
+			<nav class="topbar__inner" aria-label={lang === 'fr' ? 'Navigation principale' : 'Main navigation'}>
+				<a class="topbar__brand" href={r.home}>
+					<img src="/favicon.png" alt="" width="32" height="32" />
+					<span>Picness Valley</span>
+				</a>
+				<ul class="topbar__links">
+					<li><a href={`${r.home}#jeu`}>{s.navGame}</a></li>
+					<li><a href={r.play} aria-current={current(r.play)}>{s.navPlay}</a></li>
+					<li><a href={r.notes} aria-current={current(r.notes)}>{s.navNotes}</a></li>
+					<li><a href={r.wiki}>{s.navWiki}</a></li>
+				</ul>
+				<a class="topbar__lang" href={alternate} hreflang={lang === 'fr' ? 'en' : 'fr'}>{s.otherLang}</a>
+			</nav>
+		</header>
+		<main>
+			<slot />
+		</main>
+		<footer class="footer">
+			<div class="footer__inner">
+				<p>{s.footer}</p>
+				<ul>
+					<li><a href={r.play}>{s.navPlay}</a></li>
+					<li><a href={r.notes}>{s.navNotes}</a></li>
+					<li><a href={r.wiki}>{s.navWiki}</a></li>
+					<li><a href={alternate}>{s.otherLang}</a></li>
+				</ul>
+			</div>
+		</footer>
+	</body>
+</html>

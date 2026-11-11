@@ -1,0 +1,336 @@
+/* Styles des pages du site (accueil, jouer, notes de version). */
+*,
+*::before,
+*::after {
+	box-sizing: border-box;
+}
+
+html {
+	scroll-behavior: smooth;
+	scroll-padding-top: 80px;
+}
+
+body {
+	margin: 0;
+	font-family: var(--pv-font-body);
+	font-size: 1.0625rem;
+	line-height: 1.6;
+	color: var(--pv-ink);
+	background: var(--pv-parchment-light);
+	-webkit-font-smoothing: antialiased;
+	overflow-x: hidden;
+}
+
+img {
+	max-width: 100%;
+	height: auto;
+	display: block;
+}
+
+a {
+	color: var(--pv-sky-dark);
+}
+
+h1,
+h2,
+h3 {
+	font-family: var(--pv-font-title);
+	font-weight: normal;
+	line-height: 1.15;
+	margin: 0 0 0.5em;
+	letter-spacing: 0.01em;
+}
+
+h2 {
+	font-size: clamp(1.9rem, 4vw, 2.8rem);
+}
+
+h3 {
+	font-size: 1.5rem;
+}
+
+:focus-visible {
+	outline: 3px solid var(--pv-gold);
+	outline-offset: 3px;
+}
+
+.wrap {
+	width: min(1120px, 100% - 32px);
+	margin-inline: auto;
+}
+
+/* ---------- Barre du haut : planche de bois du jeu ---------- */
+.topbar {
+	position: sticky;
+	top: 0;
+	z-index: 20;
+	background: var(--pv-wood) url('/ui/plank.webp') center / cover;
+	border-bottom: 3px solid var(--pv-ink);
+	box-shadow: 0 3px 0 var(--pv-wood-light) inset, 0 4px 14px rgba(0, 0, 0, 0.25);
+}
+
+.topbar__inner {
+	width: min(1200px, 100% - 32px);
+	margin-inline: auto;
+	display: flex;
+	align-items: center;
+	gap: 12px 24px;
+	min-height: 64px;
+	flex-wrap: wrap;
+	padding-block: 6px;
+}
+
+.topbar__brand {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	color: var(--pv-parchment-light);
+	text-decoration: none;
+	font-family: var(--pv-font-title);
+	font-size: 1.6rem;
+	text-shadow: 0 2px 0 var(--pv-ink);
+	white-space: nowrap;
+}
+
+.topbar__links {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 4px 6px;
+	list-style: none;
+	margin: 0 auto 0 0;
+	padding: 0;
+}
+
+.topbar__links a,
+.topbar__lang {
+	display: block;
+	padding: 6px 12px;
+	border-radius: 999px;
+	color: var(--pv-parchment-light);
+	text-decoration: none;
+	font-weight: 700;
+	text-shadow: 0 1px 0 var(--pv-ink);
+}
+
+.topbar__links a:hover,
+.topbar__links a[aria-current='page'] {
+	background: rgba(43, 29, 20, 0.35);
+	box-shadow: 0 0 0 2px var(--pv-gold) inset;
+}
+
+.topbar__lang {
+	border: 2px solid var(--pv-wood-light);
+	font-size: 0.9rem;
+}
+
+.topbar__lang:hover {
+	background: rgba(43, 29, 20, 0.35);
+}
+
+@media (max-width: 720px) {
+	.topbar {
+		position: static;
+	}
+	.topbar__inner {
+		justify-content: space-between;
+	}
+	.topbar__links {
+		order: 3;
+		width: 100%;
+		justify-content: center;
+		margin: 0;
+	}
+	.topbar__links a {
+		padding: 4px 10px;
+		font-size: 0.95rem;
+	}
+}
+
+/* ---------- Boutons ---------- */
+.btn {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	gap: 10px;
+	min-height: 52px;
+	padding: 10px 26px;
+	border: 3px solid var(--pv-ink);
+	border-radius: 14px;
+	font-family: var(--pv-font-title);
+	font-size: 1.35rem;
+	text-decoration: none;
+	color: var(--pv-parchment-light);
+	text-shadow: 0 2px 0 rgba(0, 0, 0, 0.45);
+	background: var(--pv-wood) url('/ui/plank.webp') center / cover;
+	box-shadow: 0 3px 0 var(--pv-wood-light) inset, 0 5px 0 var(--pv-ink);
+	transition: transform 0.12s ease, box-shadow 0.12s ease, filter 0.12s ease;
+}
+
+.btn:hover {
+	transform: translateY(-2px);
+	filter: brightness(1.08);
+	box-shadow: 0 3px 0 var(--pv-wood-light) inset, 0 7px 0 var(--pv-ink);
+}
+
+.btn:active {
+	transform: translateY(3px);
+	box-shadow: 0 3px 0 var(--pv-wood-light) inset, 0 2px 0 var(--pv-ink);
+}
+
+.btn--leaf {
+	background: linear-gradient(var(--pv-leaf-light), var(--pv-leaf) 55%, var(--pv-leaf-dark));
+	box-shadow: 0 3px 0 rgba(255, 255, 255, 0.35) inset, 0 5px 0 var(--pv-ink);
+}
+
+.btn--leaf:hover {
+	box-shadow: 0 3px 0 rgba(255, 255, 255, 0.35) inset, 0 7px 0 var(--pv-ink);
+}
+
+/* ---------- Parchemin du jeu ---------- */
+.parchment {
+	position: relative;
+	border-style: solid;
+	border-width: 46px 22px 30px;
+	border-image: url('/ui/parchment.webp') 112 46 64 46 fill / 46px 22px 30px stretch;
+	padding: 8px 14px 6px;
+	filter: drop-shadow(0 8px 12px rgba(43, 29, 20, 0.25));
+}
+
+.parchment__title {
+	position: absolute;
+	top: -40px;
+	left: 10px;
+	right: 10px;
+	margin: 0;
+	text-align: center;
+	color: #fff;
+	font-size: 1.45rem;
+	text-shadow: 0 2px 0 var(--pv-sky-dark), 0 0 6px rgba(0, 0, 0, 0.3);
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+/* ---------- Sections ---------- */
+.section {
+	padding-block: clamp(56px, 8vw, 96px);
+}
+
+.section__head {
+	text-align: center;
+	max-width: 720px;
+	margin: 0 auto 40px;
+}
+
+.section__head p {
+	margin: 0;
+	color: var(--pv-ink-soft);
+	font-size: 1.125rem;
+}
+
+.section--sky {
+	background: linear-gradient(var(--pv-sky-light), #eef6fb);
+}
+
+.section--meadow {
+	background: linear-gradient(#e3f0c9, #f3f8e6);
+}
+
+.section--wood {
+	background: var(--pv-wood-dark) url('/ui/plank.webp') center / cover;
+	color: var(--pv-parchment-light);
+	border-block: 3px solid var(--pv-ink);
+}
+
+.section--wood h2 {
+	text-shadow: 0 3px 0 var(--pv-ink);
+}
+
+/* ---------- Pied de page ---------- */
+.footer {
+	background: var(--pv-wood-dark);
+	color: var(--pv-parchment);
+	border-top: 3px solid var(--pv-ink);
+	padding-block: 28px;
+	font-size: 0.95rem;
+}
+
+.footer__inner {
+	width: min(1120px, 100% - 32px);
+	margin-inline: auto;
+	display: flex;
+	flex-wrap: wrap;
+	gap: 12px 32px;
+	align-items: center;
+	justify-content: space-between;
+}
+
+.footer p {
+	margin: 0;
+}
+
+.footer ul {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 6px 20px;
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+.footer a {
+	color: var(--pv-parchment-light);
+}
+
+/* ---------- Pages simples (jouer, notes) ---------- */
+.page-head {
+	padding-block: 48px 8px;
+	text-align: center;
+}
+
+.page-head h1 {
+	font-size: clamp(2.2rem, 5vw, 3.4rem);
+	color: var(--pv-wood-dark);
+}
+
+.page-head p {
+	max-width: 640px;
+	margin: 0 auto;
+	color: var(--pv-ink-soft);
+}
+
+.badge {
+	display: inline-block;
+	padding: 2px 12px;
+	border: 2px solid var(--pv-ink);
+	border-radius: 999px;
+	background: var(--pv-gold);
+	color: var(--pv-ink);
+	font-weight: 800;
+	font-size: 0.85rem;
+	letter-spacing: 0.02em;
+}
+
+/* ---------- Texte des notes de version ---------- */
+.prose h2 {
+	font-size: 1.6rem;
+	color: var(--pv-wood-dark);
+	margin-top: 1.4em;
+}
+
+.prose h3 {
+	font-size: 1.3rem;
+	color: var(--pv-wood-dark);
+}
+
+.prose ul {
+	padding-left: 1.3em;
+}
+
+.prose li + li {
+	margin-top: 0.35em;
+}
+
+.prose li::marker {
+	color: var(--pv-leaf);
+}
