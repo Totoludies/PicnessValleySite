@@ -1,0 +1,82 @@
+---
+title: Les courants de pensée
+description: Déistes, libéraux, bayésiens et visionnaires, les quatre communautés des habitants de Picness Valley.
+sidebar:
+  order: 2
+---
+
+import Model3D from '../../../components/Model3D.astro';
+
+Lors de votre développement, vous devez vous assurer qu'un nombre suffisant de vos habitants soient prêts à se sacrifier pour apaiser le dragon [Zebor](/wiki/dragon/). Mais chacun voit le monde à sa façon : vos habitants se rangent en **quatre courants de pensée**.
+
+Chaque courant a sa **couleur**, son **emblème** et sa **tenue**. Un habitant naît dans l'un des quatre, tiré au hasard. En jeu, quatre compteurs sous la frise des saisons donnent le nombre d'habitants vivants de chaque courant, dans l'ordre triangle bleu, flamme jaune, rond vert, carré rouge.
+
+<div class="pv-factions">
+	<div class="pv-faction pv-faction--deists">
+		<img src="/icons/factions/deists.webp" alt="" />
+		<div>
+			<p class="pv-faction__name">Les déistes</p>
+			<p class="pv-faction__tag">Triangle bleu</p>
+			<p>Ils vouent un culte à Zebor et sont toujours prêts à se sacrifier pour lui.</p>
+		</div>
+	</div>
+	<div class="pv-faction pv-faction--liberals">
+		<img src="/icons/factions/liberals.webp" alt="" />
+		<div>
+			<p class="pv-faction__name">Les libéraux</p>
+			<p class="pv-faction__tag">Flamme jaune</p>
+			<p>Ils veulent développer l'économie et s'enrichir. Selon eux, tout est monnayable dans ce monde, même la vie.</p>
+		</div>
+	</div>
+	<div class="pv-faction pv-faction--bayesians">
+		<img src="/icons/factions/bayesians.webp" alt="" />
+		<div>
+			<p class="pv-faction__name">Les bayésiens</p>
+			<p class="pv-faction__tag">Rond vert</p>
+			<p>Rationnels, ils cherchent à s'élever par la science et le doute. Selon eux, chaque vérité est le résultat d'un calcul de probabilité bien posé.</p>
+		</div>
+	</div>
+	<div class="pv-faction pv-faction--visionaries">
+		<img src="/icons/factions/visionaries.webp" alt="" />
+		<div>
+			<p class="pv-faction__name">Les visionnaires</p>
+			<p class="pv-faction__tag">Carré rouge</p>
+			<p>Ils ne supportent pas l'argument du « réel » qui s'imposerait à eux. Ils ont soif de justice et veulent améliorer leur condition : pour eux, si le monde est injuste, il faut le changer.</p>
+		</div>
+	</div>
+</div>
+
+## Les tenues
+
+Chaque courant a sa tenue, que l'on reconnaît de loin dans le village. Les animations sont celles du jeu : choisissez-en une sous le modèle.
+
+<Model3D
+	title="Les habitants"
+	variants={[
+		{ src: 'villager-blue', label: 'Déiste' },
+		{ src: 'villager-yellow', label: 'Libéral' },
+		{ src: 'villager-green', label: 'Bayésien' },
+		{ src: 'villager-red', label: 'Visionnaire' },
+	]}
+	caption="Repos, marche, porter, construire, couper, creuser à la pelle et mort : les sept animations des habitants."
+/>
+
+| Courant | Tenue |
+|---|---|
+| Déistes (bleu) | Grand chapeau pointu penché en arrière, capuche rabattue, pèlerine et robe plissée à ceinture. Le chapeau est souple et suit les mouvements. |
+| Libéraux (jaune) | Chapeau en croissant à deux cornes sur une calotte, col montant, cape en pointe dans le dos et manches à revers. |
+| Bayésiens (vert) | Chapeau melon au bord roulé, col large ouvert, robe ample et très grandes manches à revers. |
+| Visionnaires (rouge) | Cheveux ébouriffés, large bandeau noué derrière la tête, chemise à col pointu et pantalon à ceinture. |
+
+## Avantages et stratégies
+Chaque communauté a ses avantages et ses inconvénients. Des synergies existent entre les bâtiments, et plusieurs stratégies sont possibles : se spécialiser dans une faction ou favoriser des associations de communautés.
+
+:::danger[Attention]
+Trop de visionnaires vous condamnera à coup sûr.
+:::
+
+:::note[En développement]
+Pour l'instant, le courant d'un habitant change sa tenue et les compteurs, mais pas encore son comportement. Les avantages de chaque courant arrivent dans une prochaine version ; ce wiki sera complété à ce moment-là.
+:::
+
+Et si un revirement opportun vous permettait de vous libérer définitivement du coût du sang ?

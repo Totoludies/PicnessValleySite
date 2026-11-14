@@ -1,0 +1,35 @@
+---
+title: Zebor, le dragon
+description: L'invincible dragon qui garde la vallée de Picness, son modèle 3D et ses animations.
+sidebar:
+  order: 2
+---
+
+import Model3D from '../../../components/Model3D.astro';
+
+La vallée de Picness est gardée par l'**invincible dragon Zebor**. En échange du droit de s'y installer, il exige d'être nourri de vies humaines. S'il n'est pas repu, il rasera votre village. À vous d'organiser votre société pour que vos habitants consentent au sacrifice ultime : c'est tout l'enjeu des [courants de pensée](/wiki/factions/).
+
+<Model3D
+	title="Zebor"
+	src="dragon"
+	caption="Repos, sieste, envol, vol et atterrissage : les cinq animations du dragon."
+/>
+
+## Sa vie dans la vallée
+Zebor a sa place sur la carte, parfois au sommet d'un plateau. Il y alterne :
+
+| Moment | Durée | Ce qu'il fait |
+|---|---|---|
+| **Repos** | 14 à 30 s | Assis, il respire, regarde autour de lui, cligne des yeux, bouge les oreilles ; le bout de sa queue balaie le sol. |
+| **Sieste** | 25 à 50 s (4 fois sur 10) | Roulé en boule, la tête au sol, les yeux fermés. |
+| **Vol** | un ou deux tours | Il se ramasse et bondit, puis décrit un **grand huit** à 24 m de haut, à 15 m/s, penché dans les virages, et revient se poser exactement où il était. |
+
+Son vol passe toujours **au-dessus du point de départ de vos habitants**. Il suit la vitesse du jeu : il s'arrête en pause et file en ×20.
+
+## Sa taille
+- Assis, le sommet de sa tête est à **11,7 m**, deux fois et demie la hauteur d'une maison ; 13,1 m avec les cornes et le haut des ailes.
+- En vol, ses ailes s'ouvrent sur **25 m** environ.
+
+:::note[En développement]
+Pour l'instant, Zebor est un décor : il ne bloque ni les constructions ni les habitants, on ne peut pas le sélectionner, et il ne réclame pas encore son tribut.
+:::

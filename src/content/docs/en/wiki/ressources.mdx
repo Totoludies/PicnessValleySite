@@ -5,6 +5,8 @@ sidebar:
   order: 4
 ---
 
+import Model3D from '../../../../components/Model3D.astro';
+
 The counter at the top left of the screen shows what the village holds.
 
 ## Items
@@ -23,9 +25,20 @@ Nothing is harvested while no storage or building site has room for it. Build a 
 
 ## On the map
 ### Trees
-A felled tree gives logs, left on the ground and then stored. Young trees grow for **one year** before they can be cut. A new young tree sprouts at the start of every summer.
+<Model3D
+	title="Tree"
+	variants={[
+		{ src: 'tree', label: 'Grown tree' },
+		{ src: 'young-tree', label: 'Young tree' },
+	]}
+	caption="Through the seasons, trees blossom, turn yellow or red, shed their leaves and get covered in snow."
+/>
+
+A felled grown tree gives **5 logs**, left on the ground in the direction of its fall and then stored. Young trees grow for **one year** before they can be cut. A new young tree sprouts at the start of every summer.
 
 ### Rocks
+<Model3D title="Rock" src="rock" caption="In winter, the stone turns white and snow caps grow on top." />
+
 | Rock | Stones |
 |---|---|
 | Large | 10 |
@@ -35,9 +48,22 @@ A felled tree gives logs, left on the ground and then stored. Young trees grow f
 Each harvest gives 1 stone, and the rock **shrinks** as it is broken. It disappears once empty.
 
 ### Berry bushes
+<Model3D
+	title="Berry bush and stump"
+	variants={[
+		{ src: 'berry-bush', label: 'Bush' },
+		{ src: 'stump', label: 'Stump' },
+	]}
+/>
+
 - A full bush holds **5 berries**; each picking takes 1, and you can see the berries disappear one by one.
 - An empty bush fills up again at the **start of summer**. A new bush grows about every other summer.
 - From its window, a bush can be **dug up** ("Dig up the stump" button): a gatherer brings a stump back to the Berry Hut.
 - From a Berry Hut's card, **"Plant a bush"** places new bushes inside its circle. They start without berries.
+
+### Tall grass
+<Model3D title="Tall grass" src="tall-grass" caption="Green in spring and summer, yellow in autumn, flattened under the snow in winter." />
+
+Tufts of tall grass decorate the map. They sway in the wind and follow the seasons, but cannot be harvested.
 
 Clicking a tree, a rock or a bush opens its window, showing what it has left.

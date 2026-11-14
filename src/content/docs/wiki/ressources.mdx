@@ -5,6 +5,8 @@ sidebar:
   order: 4
 ---
 
+import Model3D from '../../../components/Model3D.astro';
+
 Le compteur en haut à gauche de l'écran montre ce que contient le village.
 
 ## Les objets
@@ -23,9 +25,20 @@ Rien n'est récolté tant qu'aucun stockage ni chantier n'a de place pour le pro
 
 ## Sur la carte
 ### Arbres
-Un arbre abattu donne des bûches, laissées au sol puis rangées. Les jeunes arbres grandissent pendant **un an** avant de pouvoir être coupés. Un nouveau jeune arbre pousse au début de chaque été.
+<Model3D
+	title="Arbre"
+	variants={[
+		{ src: 'tree', label: 'Arbre adulte' },
+		{ src: 'young-tree', label: 'Jeune arbre' },
+	]}
+	caption="Au fil des saisons, les arbres fleurissent, jaunissent ou rougissent, perdent leurs feuilles et s'enneigent."
+/>
+
+Un arbre adulte abattu donne **5 bûches**, laissées au sol dans le sens de sa chute puis rangées. Les jeunes arbres grandissent pendant **un an** avant de pouvoir être coupés. Un nouveau jeune arbre pousse au début de chaque été.
 
 ### Rochers
+<Model3D title="Rocher" src="rock" caption="En hiver, la pierre blanchit et des calottes de neige poussent sur le dessus." />
+
 | Rocher | Pierres |
 |---|---|
 | Grand | 10 |
@@ -35,9 +48,22 @@ Un arbre abattu donne des bûches, laissées au sol puis rangées. Les jeunes ar
 Chaque récolte donne 1 pierre, et le rocher **rapetisse** à mesure qu'on le casse. Il disparaît quand il est vide.
 
 ### Buissons à baies
+<Model3D
+	title="Buisson à baies et souche"
+	variants={[
+		{ src: 'berry-bush', label: 'Buisson' },
+		{ src: 'stump', label: 'Souche' },
+	]}
+/>
+
 - Un buisson plein porte **5 baies** ; chaque cueillette en prend 1, et on voit les baies disparaître une à une.
 - Un buisson vide se remplit au **début de l'été**. Un nouveau buisson pousse en moyenne un été sur deux.
 - Depuis sa fenêtre, un buisson peut être **déraciné** (bouton « Extraire la souche ») : un cueilleur rapporte une souche à la cabane de baies.
 - Depuis la fiche d'une cabane de baies, **« Planter un buisson »** pose de nouveaux buissons dans son cercle. Ils naissent sans baies.
+
+### Herbe haute
+<Model3D title="Herbe haute" src="tall-grass" caption="Verte au printemps et en été, jaune en automne, couchée sous la neige en hiver." />
+
+Des touffes d'herbe haute décorent la carte. Elles bougent avec le vent et suivent les saisons, sans se récolter.
 
 Un clic sur un arbre, un rocher ou un buisson ouvre sa fenêtre, avec ce qu'il lui reste.

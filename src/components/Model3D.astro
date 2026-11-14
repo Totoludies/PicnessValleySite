@@ -1,0 +1,273 @@
+---
+// Lecteur 3D d'un modèle du jeu (fichiers public/models/*.glb, exportés de Blender).
+// Usage dans une page .mdx du wiki :
+//   <Model3D src="house-a" title="Maison simple" />
+//   <Model3D title="Maison simple" variants={[{ src: 'house-a', label: 'A' }, { src: 'house-b', label: 'B' }]} />
+interface Variant {
+	src: string;
+	label: string;
+}
+interface Props {
+	title: string;
+	src?: string;
+	variants?: Variant[];
+	caption?: string;
+}
+
+const { title, src, variants = [], caption } = Astro.props;
+const lang = Astro.locals.starlightRoute?.locale === 'en' ? 'en' : 'fr';
+const file = (name: string) => `/models/${name}.glb`;
+const first = file(src ?? variants[0]?.src ?? '');
+
+const text = {
+	fr: {
+		hint: 'Glissez pour tourner, molette pour zoomer',
+		rotate: 'Rotation auto',
+		reset: 'Recentrer',
+		loading: 'Chargement du modèle…',
+		error: 'Le modèle 3D n’a pas pu être chargé.',
+		animations: 'Animations',
+		clips: {
+			Idle: 'Repos',
+			Walk: 'Marche',
+			Carry: 'Porte',
+			Work: 'Construit',
+			Chop: 'Coupe',
+			Dig: 'Pelle',
+			Death: 'Mort',
+			Sleep: 'Sieste',
+			TakeOff: 'Envol',
+			Fly: 'Vol',
+			Land: 'Atterrissage',
+		},
+	},
+	en: {
+		hint: 'Drag to rotate, scroll to zoom',
+		rotate: 'Auto-rotate',
+		reset: 'Reset view',
+		loading: 'Loading model…',
+		error: 'The 3D model could not be loaded.',
+		animations: 'Animations',
+		clips: {
+			Idle: 'Idle',
+			Walk: 'Walk',
+			Carry: 'Carry',
+			Work: 'Build',
+			Chop: 'Chop',
+			Dig: 'Dig',
+			Death: 'Death',
+			Sleep: 'Nap',
+			TakeOff: 'Take-off',
+			Fly: 'Flight',
+			Land: 'Landing',
+		},
+	},
+}[lang];
+---
+
+<figure class="pv-model not-content" data-src={first} data-labels={JSON.stringify(text.clips)}>
+	<figcaption class="pv-model__title">{title}</figcaption>
+	<div class="pv-model__stage">
+		<p class="pv-model__status pv-model__status--loading">{text.loading}</p>
+		<p class="pv-model__status pv-model__status--error">{text.error}</p>
+		<div class="pv-model__tools">
+			<button type="button" class="pv-model__tool" data-rotate aria-pressed="true" title={text.rotate}>
+				<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 12a8 8 0 1 1-2.34-5.66M20 4v5h-5" /></svg>
+				<span class="sr-only">{text.rotate}</span>
+			</button>
+			<button type="button" class="pv-model__tool" data-reset title={text.reset}>
+				<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3" /><path d="M12 2v4M12 18v4M2 12h4M18 12h4" /></svg>
+				<span class="sr-only">{text.reset}</span>
+			</button>
+		</div>
+		<p class="pv-model__hint">{text.hint}</p>
+	</div>
+	{
+		variants.length > 1 && (
+			<div class="pv-model__variants">
+				{variants.map((v, i) => (
+					<button type="button" class="pv-model__chip" data-variant={file(v.src)} aria-pressed={String(i === 0)}>
+						{v.label}
+					</button>
+				))}
+			</div>
+		)
+	}
+	<div class="pv-model__clips" role="group" aria-label={text.animations} hidden></div>
+	{caption && <p class="pv-model__caption">{caption}</p>}
+</figure>
+
+<script>
+	import { initModelViewers } from '../scripts/model-viewer';
+	initModelViewers();
+</script>
+
+<style>
+	.pv-model {
+		margin: 1.5rem 0;
+		padding: 10px;
+		background: var(--pv-wood) url('/ui/plank.webp') center / cover;
+		border: 3px solid var(--pv-ink);
+		border-radius: 18px;
+		box-shadow: 0 5px 0 rgba(43, 29, 20, 0.35), 0 14px 30px rgba(43, 29, 20, 0.2);
+	}
+
+	.pv-model__title {
+		margin: 0 4px 8px;
+		font-family: var(--pv-font-title);
+		font-size: 1.35rem;
+		line-height: 1.2;
+		color: var(--pv-parchment-light);
+		text-shadow: 0 2px 0 var(--pv-ink);
+	}
+
+	.pv-model__stage {
+		position: relative;
+		aspect-ratio: 4 / 3;
+		max-height: 460px;
+		width: 100%;
+		overflow: hidden;
+		border: 3px solid var(--pv-ink);
+		border-radius: 12px;
+		background:
+			radial-gradient(ellipse 70% 40% at 50% 92%, rgba(122, 170, 72, 0.45), transparent 70%),
+			linear-gradient(#bfe0f5, #e8f3fa 55%, #f8eccf);
+		cursor: grab;
+		touch-action: pan-y;
+	}
+
+	.pv-model__stage:active {
+		cursor: grabbing;
+	}
+
+	.pv-model__stage :global(canvas) {
+		display: block;
+		width: 100% !important;
+		height: 100% !important;
+	}
+
+	.pv-model__status {
+		position: absolute;
+		inset: 0;
+		display: none;
+		place-items: center;
+		margin: 0;
+		padding: 1rem;
+		text-align: center;
+		font-weight: 700;
+		color: var(--pv-ink-soft);
+	}
+
+	.pv-model.is-loading .pv-model__status--loading,
+	.pv-model.is-error .pv-model__status--error {
+		display: grid;
+	}
+
+	.pv-model__tools {
+		position: absolute;
+		top: 8px;
+		right: 8px;
+		display: flex;
+		gap: 6px;
+	}
+
+	.pv-model__tool {
+		display: grid;
+		place-items: center;
+		width: 36px;
+		height: 36px;
+		padding: 0;
+		color: var(--pv-wood-dark);
+		background: linear-gradient(#fffaf0, var(--pv-parchment));
+		border: 2px solid var(--pv-ink);
+		border-radius: 10px;
+		box-shadow: 0 3px 0 var(--pv-ink);
+		cursor: pointer;
+	}
+
+	.pv-model__tool svg {
+		width: 20px;
+		height: 20px;
+		fill: none;
+		stroke: currentColor;
+		stroke-width: 2.4;
+		stroke-linecap: round;
+		stroke-linejoin: round;
+	}
+
+	.pv-model__tool[aria-pressed='true'] {
+		color: #fff;
+		background: linear-gradient(var(--pv-leaf-light), var(--pv-leaf));
+	}
+
+	.pv-model__tool:active {
+		translate: 0 2px;
+		box-shadow: 0 1px 0 var(--pv-ink);
+	}
+
+	.pv-model__hint {
+		position: absolute;
+		left: 10px;
+		bottom: 8px;
+		margin: 0;
+		padding: 2px 10px;
+		font-size: 0.8rem;
+		font-weight: 700;
+		color: var(--pv-ink-soft);
+		background: rgba(255, 250, 240, 0.75);
+		border-radius: 999px;
+		pointer-events: none;
+	}
+
+	.pv-model__variants,
+	.pv-model__clips {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 6px;
+		margin-top: 10px;
+	}
+
+	.pv-model__clips[hidden] {
+		display: none;
+	}
+
+	.pv-model :global(.pv-model__chip) {
+		padding: 4px 14px;
+		font: inherit;
+		font-size: 0.92rem;
+		font-weight: 800;
+		color: var(--pv-wood-dark);
+		background: linear-gradient(#fffaf0, var(--pv-parchment) 60%, var(--pv-parchment-dark));
+		border: 2px solid var(--pv-ink);
+		border-radius: 999px;
+		box-shadow: 0 3px 0 var(--pv-ink);
+		cursor: pointer;
+	}
+
+	.pv-model :global(.pv-model__chip[aria-pressed='true']) {
+		color: #fff;
+		text-shadow: 0 1px 0 var(--pv-leaf-dark);
+		background: linear-gradient(var(--pv-leaf-light), var(--pv-leaf));
+	}
+
+	.pv-model :global(.pv-model__chip:active) {
+		translate: 0 2px;
+		box-shadow: 0 1px 0 var(--pv-ink);
+	}
+
+	.pv-model__caption {
+		margin: 8px 4px 0;
+		font-size: 0.9rem;
+		color: var(--pv-parchment-light);
+		text-shadow: 0 1px 0 var(--pv-ink);
+	}
+
+	.sr-only {
+		position: absolute;
+		width: 1px;
+		height: 1px;
+		overflow: hidden;
+		clip: rect(0 0 0 0);
+		white-space: nowrap;
+	}
+</style>

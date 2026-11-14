@@ -1,0 +1,48 @@
+---
+title: Habitants
+description: Les besoins des habitants de Picness Valley et leur façon de choisir quoi faire.
+sidebar:
+  order: 1
+---
+
+import Model3D from '../../../components/Model3D.astro';
+
+Chaque habitant a un nom, une taille et un caractère qui lui sont propres. Il vit sa vie tout seul : vous lui donnez un métier ou un ordre, il s'occupe du reste. Sa tenue dépend de son [courant de pensée](/wiki/factions/), tiré au hasard à sa naissance.
+
+<Model3D
+	title="Un habitant"
+	variants={[
+		{ src: 'villager-blue', label: 'Bleu' },
+		{ src: 'villager-yellow', label: 'Jaune' },
+		{ src: 'villager-green', label: 'Vert' },
+		{ src: 'villager-red', label: 'Rouge' },
+	]}
+/>
+
+## Les jauges
+| | Jauge | Ce qu'il faut savoir |
+|---|---|---|
+| <img class="pv-icon" src="/icons/needs/health.webp" alt="" /> | **Points de vie** | 100 par habitant. Arriver à 0 est la seule cause de mort. |
+| <img class="pv-icon" src="/icons/needs/food.webp" alt="" /> | **Faim** | Baisse en continu. L'habitant mange 1 nourriture en rentrant chez lui. Sous 30 %, il perd des points de vie. |
+| <img class="pv-icon" src="/icons/needs/cold.webp" alt="" /> | **Chaleur** | Baisse d'autant plus vite que la saison est froide. Il se réchauffe chez lui s'il y a du bois de chauffe. Sous 30 %, il perd des points de vie. |
+| <img class="pv-icon" src="/icons/needs/energy.webp" alt="" /> | **Énergie** | Le travail fatigue. Il se repose pour la regagner. |
+
+:::caution[Les habitants peuvent mourir]
+Affamé **ou** gelé (jauge sous 30 %), un habitant perd 0,5 point de vie par seconde ; affamé **et** gelé, trois fois plus vite. Il les regagne quand sa faim et sa chaleur sont toutes les deux au moins à 50 %. Le détail est sur la page [Mécaniques de jeu](/wiki/mecaniques/).
+:::
+
+## Comment un habitant choisit quoi faire
+Dans l'ordre :
+1. **Votre ordre**, sauf s'il a très faim, très froid ou plus d'énergie.
+2. S'il porte des objets, il les **dépose** dans un stockage.
+3. Très faim (moins de 40 %) : il **rentre manger**.
+4. Très froid (moins de 40 %) : il **rentre se chauffer**, et va chercher du bois si la maison n'en a plus.
+5. Plus d'énergie : il **se repose**.
+6. Moins de 5 bois de chauffe à la maison : il **va en chercher**.
+7. Il **travaille** : la tâche la plus proche de son métier, sinon une tâche sans métier (ramasser, construire).
+8. Un peu faim ou froid (moins de 60 %) : il rentre.
+9. Énergie pas pleine : il se repose.
+10. Rien à faire : il se promène près de chez lui.
+
+## La fiche d'un habitant
+Un clic sur un habitant ouvre sa fiche : nom, âge, métier, activité en cours, ses quatre jauges (points de vie, énergie, faim, chaleur), l'objet qu'il porte et un bouton vers sa maison. La fiche se ferme s'il meurt.

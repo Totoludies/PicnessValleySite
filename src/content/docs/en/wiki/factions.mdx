@@ -1,0 +1,82 @@
+---
+title: Schools of thought
+description: Deists, Liberals, Bayesians and Visionaries, the four communities of Picness Valley's villagers.
+sidebar:
+  order: 2
+---
+
+import Model3D from '../../../../components/Model3D.astro';
+
+As your village grows, you must make sure that enough of your villagers are ready to sacrifice themselves to appease the dragon [Zebor](/en/wiki/dragon/). But everyone sees the world their own way: your villagers belong to **four schools of thought**.
+
+Each school has its **colour**, its **emblem** and its **outfit**. A villager is born into one of the four, at random. In the game, four counters under the season strip show how many living villagers belong to each school, in the order blue triangle, yellow flame, green circle, red square.
+
+<div class="pv-factions">
+	<div class="pv-faction pv-faction--deists">
+		<img src="/icons/factions/deists.webp" alt="" />
+		<div>
+			<p class="pv-faction__name">The Deists</p>
+			<p class="pv-faction__tag">Blue triangle</p>
+			<p>They worship Zebor and are always ready to sacrifice themselves for him.</p>
+		</div>
+	</div>
+	<div class="pv-faction pv-faction--liberals">
+		<img src="/icons/factions/liberals.webp" alt="" />
+		<div>
+			<p class="pv-faction__name">The Liberals</p>
+			<p class="pv-faction__tag">Yellow flame</p>
+			<p>They want to grow the economy and get rich. To them, everything in this world has a price, even life.</p>
+		</div>
+	</div>
+	<div class="pv-faction pv-faction--bayesians">
+		<img src="/icons/factions/bayesians.webp" alt="" />
+		<div>
+			<p class="pv-faction__name">The Bayesians</p>
+			<p class="pv-faction__tag">Green circle</p>
+			<p>Rational minds, they seek to rise through science and doubt. To them, every truth is the outcome of a well-posed probability calculation.</p>
+		</div>
+	</div>
+	<div class="pv-faction pv-faction--visionaries">
+		<img src="/icons/factions/visionaries.webp" alt="" />
+		<div>
+			<p class="pv-faction__name">The Visionaries</p>
+			<p class="pv-faction__tag">Red square</p>
+			<p>They cannot stand being told that "reality" leaves them no choice. They thirst for justice and want to better their lot: if the world is unfair, it must be changed.</p>
+		</div>
+	</div>
+</div>
+
+## Outfits
+
+Each school has its own outfit, easy to spot from afar in the village. The animations are the game's own: pick one under the model.
+
+<Model3D
+	title="The villagers"
+	variants={[
+		{ src: 'villager-blue', label: 'Deist' },
+		{ src: 'villager-yellow', label: 'Liberal' },
+		{ src: 'villager-green', label: 'Bayesian' },
+		{ src: 'villager-red', label: 'Visionary' },
+	]}
+	caption="Idle, walk, carry, build, chop, dig and death: the villagers' seven animations."
+/>
+
+| School | Outfit |
+|---|---|
+| Deists (blue) | Tall pointed hat tilted back, lowered hood, cape and pleated belted robe. The hat is soft and follows every move. |
+| Liberals (yellow) | Two-horned crescent hat on a skullcap, high collar, pointed cape at the back and turned-up sleeves. |
+| Bayesians (green) | Bowler hat with a rolled brim, wide open collar, loose robe and very large turned-up sleeves. |
+| Visionaries (red) | Tousled hair, wide headband tied at the back, shirt with a pointed collar and belted trousers. |
+
+## Strengths and strategies
+Each community has its strengths and weaknesses. Buildings have synergies with each other, and several strategies are possible: specialise in one faction or combine communities.
+
+:::danger[Beware]
+Too many Visionaries will doom you for sure.
+:::
+
+:::note[In development]
+For now, a villager's school changes their outfit and the counters, but not yet their behaviour. Each school's strengths are coming in a future version; this wiki will be completed then.
+:::
+
+Unless a timely change of course could free you from the blood price for good?

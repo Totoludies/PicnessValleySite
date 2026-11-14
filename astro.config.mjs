@@ -25,13 +25,19 @@ export default defineConfig({
 				{
 					label: 'Picness Wiki',
 					translations: { en: 'Picness Wiki' },
-					items: [{ slug: 'wiki' }, { slug: 'wiki/bien-demarrer' }, { slug: 'wiki/commandes' }],
+					items: [
+						{ slug: 'wiki' },
+						{ slug: 'wiki/bien-demarrer' },
+						{ slug: 'wiki/commandes' },
+						{ slug: 'wiki/mecaniques' },
+					],
 				},
 				{
 					label: 'Le village',
 					translations: { en: 'The village' },
 					items: [
 						{ slug: 'wiki/habitants' },
+						{ slug: 'wiki/factions' },
 						{ slug: 'wiki/metiers' },
 						{ slug: 'wiki/batiments' },
 						{ slug: 'wiki/ressources' },
@@ -40,7 +46,7 @@ export default defineConfig({
 				{
 					label: 'Le monde',
 					translations: { en: 'The world' },
-					items: [{ slug: 'wiki/saisons' }],
+					items: [{ slug: 'wiki/saisons' }, { slug: 'wiki/dragon' }],
 				},
 			],
 		}),

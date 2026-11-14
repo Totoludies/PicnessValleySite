@@ -100,3 +100,93 @@ h1#_top {
 	width: 64px;
 	text-align: center;
 }
+
+/* Coût d'un bâtiment : nombre + petite icône de ressource. */
+.sl-markdown-content .pv-cost {
+	display: inline-flex;
+	align-items: center;
+	gap: 3px;
+	margin-right: 6px;
+	font-weight: 800;
+	white-space: nowrap;
+}
+
+.sl-markdown-content img.pv-res,
+.sl-markdown-content table img.pv-res {
+	display: inline-block;
+	width: 24px;
+	height: 24px;
+	margin: 0;
+	object-fit: contain;
+	vertical-align: middle;
+}
+
+/* Courants de pensée : une carte par courant, avec son emblème et sa couleur. */
+.sl-markdown-content .pv-factions {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
+	gap: 14px;
+	margin: 1.5rem 0;
+}
+
+.sl-markdown-content .pv-faction {
+	display: flex;
+	gap: 14px;
+	align-items: flex-start;
+	margin: 0;
+	padding: 14px 16px;
+	background: linear-gradient(135deg, var(--tint), #fffaf0 70%);
+	border: 3px solid var(--pv-ink);
+	border-left: 10px solid var(--accent);
+	border-radius: 14px;
+	box-shadow: 0 4px 0 var(--pv-ink);
+	color: var(--pv-ink);
+}
+
+.sl-markdown-content .pv-faction img {
+	flex: none;
+	width: 64px;
+	height: auto;
+	margin: 0;
+	filter: drop-shadow(0 3px 0 rgba(43, 29, 20, 0.25));
+}
+
+.sl-markdown-content .pv-faction p {
+	margin: 0;
+	color: var(--pv-ink-soft);
+	line-height: 1.5;
+}
+
+.sl-markdown-content .pv-faction .pv-faction__name {
+	font-family: var(--pv-font-title);
+	font-size: 1.4rem;
+	line-height: 1.15;
+	color: var(--accent);
+}
+
+.sl-markdown-content .pv-faction .pv-faction__tag {
+	margin-bottom: 0.4em;
+	font-size: 0.85rem;
+	font-weight: 800;
+	text-transform: uppercase;
+	letter-spacing: 0.04em;
+	color: var(--accent);
+	opacity: 0.8;
+}
+
+.pv-faction--deists {
+	--accent: #34558f;
+	--tint: #d8e3f5;
+}
+.pv-faction--liberals {
+	--accent: #96700f;
+	--tint: #fbeab0;
+}
+.pv-faction--bayesians {
+	--accent: #3d7a3a;
+	--tint: #d8edcf;
+}
+.pv-faction--visionaries {
+	--accent: #a8352c;
+	--tint: #f6d6cf;
+}

@@ -1,0 +1,137 @@
+---
+title: Buildings
+description: Every building in Picness Valley, with its cost, size and role, and its 3D model.
+sidebar:
+  order: 3
+---
+
+import Model3D from '../../../../components/Model3D.astro';
+
+Buildings are placed from the **build bar**, halfway down the left edge of the screen: hover a category to see its buildings. The 3D models on this page are the game's own: drag them to rotate.
+
+## All costs at a glance
+
+| | Building | Cost | Size |
+|---|---|---|---|
+| <img class="pv-icon" src="/icons/buildings/DirtRoad.webp" alt="" /> | **Dirt Road** | Free | 1 tile |
+| <img class="pv-icon" src="/icons/buildings/PavedRoad.webp" alt="" /> | **Paved Road** | <span class="pv-cost">1 <img class="pv-res" src="/icons/items/stone.webp" alt="stone" /></span> per tile | 1 tile |
+| <img class="pv-icon" src="/icons/buildings/SimpleHouse.webp" alt="" /> | **Simple House** | <span class="pv-cost">10 <img class="pv-res" src="/icons/items/log.webp" alt="logs" /></span> | 5 × 5 |
+| <img class="pv-icon" src="/icons/buildings/SmallStorageArea.webp" alt="" /> | **Small Storage Area** | Free (clearing only) | 3 × 3 |
+| <img class="pv-icon" src="/icons/buildings/BarnBuilding.webp" alt="" /> | **Small Cellar** | <span class="pv-cost">5 <img class="pv-res" src="/icons/items/log.webp" alt="logs" /></span> <span class="pv-cost">10 <img class="pv-res" src="/icons/items/stone.webp" alt="stones" /></span> | 3 × 6 |
+| <img class="pv-icon" src="/icons/buildings/LogisticsCenter.webp" alt="" /> | **Logistics Center** | <span class="pv-cost">5 <img class="pv-res" src="/icons/items/log.webp" alt="logs" /></span> <span class="pv-cost">5 <img class="pv-res" src="/icons/items/stone.webp" alt="stones" /></span> | 5 × 5 |
+| <img class="pv-icon" src="/icons/buildings/PotatoField.webp" alt="" /> | **Potato Field** | Free | 2 × 2 to 10 × 10 |
+| <img class="pv-icon" src="/icons/buildings/BerryHut.webp" alt="" /> | **Berry Hut** | <span class="pv-cost">10 <img class="pv-res" src="/icons/items/log.webp" alt="logs" /></span> <span class="pv-cost">5 <img class="pv-res" src="/icons/items/stone.webp" alt="stones" /></span> | 4 × 4 |
+| <img class="pv-icon" src="/icons/buildings/RangerCabin.webp" alt="" /> | **Ranger's Cabin** | <span class="pv-cost">20 <img class="pv-res" src="/icons/items/log.webp" alt="logs" /></span> | 4 × 4 |
+| <img class="pv-icon" src="/icons/buildings/WoodcuttingWorkshop.webp" alt="" /> | **Woodcutting Workshop** | <span class="pv-cost">10 <img class="pv-res" src="/icons/items/log.webp" alt="logs" /></span> | 4 × 4 |
+
+:::tip[Your first building]
+The **Small Storage Area** needs no materials: it is the right first building site, since nothing is harvested while no storage has room.
+:::
+
+## From building site to building
+A placed building becomes a **building site**, which goes through three steps. Its card shows the progress ("Construction: N %") and one gauge per material to bring.
+
+| Step | What happens | Share of progress |
+|---|---|---|
+| 1. Clearing | Trees, rocks and bushes on the footprint are removed, then a shovel clears each tile. | 20 % |
+| 2. Delivery | Villagers bring the materials (a wheelbarrow spins above the site). | 30 % |
+| 3. Construction | Carpenters put up the building, which rises from the ground. | 50 % |
+
+- While placing, the **R key** rotates the building; it starts with its door facing the camera. Keep **Shift** held when releasing the click to place several in a row.
+- A **green arrow** on the ground shows each entrance while placing and while the card is open.
+- Nothing can be placed on an ordered road that has not been laid yet.
+- Every building can be **paused** (its tasks stop, its villagers lose their home) or **demolished** from its card. **Nothing is refunded** when demolishing: neither materials nor contents.
+
+## Roads
+| | Road | Cost | Effect |
+|---|---|---|---|
+| <img class="pv-icon" src="/icons/buildings/DirtRoad.webp" alt="" /> | **Dirt Road** | Free | Villagers walk **10 % faster** on it. |
+| <img class="pv-icon" src="/icons/buildings/PavedRoad.webp" alt="" /> | **Paved Road** | 1 stone per tile | Villagers walk **20 % faster** on it. |
+
+Villagers take a detour along roads when it saves time. A road ending in front of a door extends up to it. Each road tile is demolished from its own card.
+
+## Housing
+
+<Model3D
+	title="Simple House"
+	variants={[
+		{ src: 'house-a', label: 'House A' },
+		{ src: 'house-b', label: 'House B' },
+		{ src: 'house-c', label: 'House C' },
+	]}
+	caption="Three thatched cottage variants, picked at random when placed."
+/>
+
+**Simple House** · <span class="pv-cost">10 <img class="pv-res" src="/icons/items/log.webp" alt="logs" /></span> · 5 × 5 tiles
+
+- Houses villagers and brings **new ones** into the world.
+- Keeps **5 firewood and 5 food** in total. Villagers eat and warm up there.
+- The fire burns while there is wood and the season is cold: the chimney smokes, and wood burns faster the colder the season.
+- In winter, snow covers the thatch in patches, with icicles along the roof's edge.
+
+## Storage
+
+<Model3D title="Small Storage Area" src="small-storage" />
+
+**Small Storage Area** · free · 3 × 3 tiles
+
+- Stores **stone, logs and firewood**: one pile of 4 items per tile, 9 piles in all, visible on their tile.
+- **No materials** to bring: clearing only. Villagers can walk through it.
+- An opening in the middle of the front side; a road ending in front of it extends up to it.
+
+<Model3D title="Small Cellar" src="small-cellar" />
+
+**Small Cellar** · <span class="pv-cost">5 <img class="pv-res" src="/icons/items/log.webp" alt="logs" /></span> <span class="pv-cost">10 <img class="pv-res" src="/icons/items/stone.webp" alt="stones" /></span> · 3 × 6 tiles
+
+- Keeps **100 food** in total, berries and potatoes alike.
+- A stone cellar under a vault of planks, with its door on a short side.
+
+## General buildings
+
+<Model3D title="Logistics Center" src="logistics-center" />
+
+**Logistics Center** · <span class="pv-cost">5 <img class="pv-res" src="/icons/items/log.webp" alt="logs" /></span> <span class="pv-cost">5 <img class="pv-res" src="/icons/items/stone.webp" alt="stones" /></span> · 5 × 5 tiles
+
+- Its **logisticians** bring food and firewood to the houses linked to the center by a path.
+- A paved square with an entrance in the middle of each side and a signpost.
+
+## Food
+
+**Potato Field** · free · 2 × 2 to 10 × 10 tiles
+
+- Drawn as a rectangle, at the size you want.
+- **Farmers** plough it in spring, it grows in summer, they harvest it in autumn; it is reset in winter.
+
+<Model3D title="Berry Hut" src="berry-hut" />
+
+**Berry Hut** · <span class="pv-cost">10 <img class="pv-res" src="/icons/items/log.webp" alt="logs" /></span> <span class="pv-cost">5 <img class="pv-res" src="/icons/items/stone.webp" alt="stones" /></span> · 4 × 4 tiles
+
+- Up to **2 gatherers** attached; its work circle has a **25-tile** radius.
+- Keeps **60 berries**, visible in twelve baskets on its deck, and separately **20 stumps**. Villagers come here to eat.
+- Its **"Plant a bush"** button places new bushes inside its circle: a gatherer plants a stump there, which becomes a bush without berries.
+
+## Resources
+
+<Model3D title="Ranger's Cabin" src="ranger-cabin" />
+
+**Ranger's Cabin** · <span class="pv-cost">20 <img class="pv-res" src="/icons/items/log.webp" alt="logs" /></span> · 4 × 4 tiles
+
+- Up to **3 foresters** attached; its work circle has a **30-tile** radius. Its card counts the trees in the circle.
+- Attached foresters pick up, cut and **replant** only inside the circle, at a pace that depends on the number of trees:
+
+| Trees in the circle | Plantings before the next cut |
+|---|---|
+| Fewer than 80 | 2 |
+| 80 to 99 | 1 |
+| 100 or more | none: they cut freely |
+
+## Crafting
+
+<Model3D title="Woodcutting Workshop" src="woodcutting-workshop" />
+
+**Woodcutting Workshop** · <span class="pv-cost">10 <img class="pv-res" src="/icons/items/log.webp" alt="logs" /></span> · 4 × 4 tiles
+
+- A **woodcutter** at the chopping block turns **1 log into 2 firewood**.
+- Two separate stocks: **20 logs** and **40 firewood**, visible under the lean-to.
+- Its card sets the village's **global firewood limit** (40 by default, no maximum). It also counts the wood in houses and other storage, and stops the splitting once reached.
+- The axe stuck in the block disappears while the woodcutter works there.

@@ -24,6 +24,8 @@ Le site s'ouvre sur http://localhost:4321. `npm run build` produit le site final
 | Pages du wiki | `src/content/docs/wiki/` (FR) et `src/content/docs/en/wiki/` (EN, mêmes noms de fichiers) |
 | Menu du wiki | `sidebar` dans `astro.config.mjs` |
 | Images du jeu (icônes, cadres, parchemin, illustration) | `node scripts/import-art.mjs` les recopie depuis le dépôt `Picness-Valley` voisin |
+| Modèles 3D du wiki (`public/models/*.glb`) | `bash scripts/export-models.sh` les réexporte depuis les `.blend` du dépôt `Picness-Valley` (Blender 5.2, animations comprises) |
+| Lecteur 3D (rotation, animations, rendu cartoon) | `src/components/Model3D.astro` et `src/scripts/model-viewer.ts` ; dans une page `.mdx` : `<Model3D title="…" src="house-a" />` |
 
 ## Ajouter une note de version
 

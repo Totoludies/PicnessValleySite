@@ -1,0 +1,137 @@
+---
+title: Bâtiments
+description: Tous les bâtiments de Picness Valley, leur coût, leur taille et leur rôle, avec leurs modèles 3D.
+sidebar:
+  order: 3
+---
+
+import Model3D from '../../../components/Model3D.astro';
+
+Les bâtiments se posent depuis la **barre de constructions**, au milieu du bord gauche de l'écran : passez la souris sur une catégorie pour voir ses bâtiments. Les modèles 3D de cette page sont ceux du jeu : faites-les tourner à la souris.
+
+## Tous les coûts en un coup d'œil
+
+| | Bâtiment | Coût | Taille |
+|---|---|---|---|
+| <img class="pv-icon" src="/icons/buildings/DirtRoad.webp" alt="" /> | **Route de terre** | Gratuite | 1 case |
+| <img class="pv-icon" src="/icons/buildings/PavedRoad.webp" alt="" /> | **Route pavée** | <span class="pv-cost">1 <img class="pv-res" src="/icons/items/stone.webp" alt="pierre" /></span> par case | 1 case |
+| <img class="pv-icon" src="/icons/buildings/SimpleHouse.webp" alt="" /> | **Maison simple** | <span class="pv-cost">10 <img class="pv-res" src="/icons/items/log.webp" alt="bûches" /></span> | 5 × 5 |
+| <img class="pv-icon" src="/icons/buildings/SmallStorageArea.webp" alt="" /> | **Petite aire de stockage** | Gratuite (défrichage seulement) | 3 × 3 |
+| <img class="pv-icon" src="/icons/buildings/BarnBuilding.webp" alt="" /> | **Petit cellier** | <span class="pv-cost">5 <img class="pv-res" src="/icons/items/log.webp" alt="bûches" /></span> <span class="pv-cost">10 <img class="pv-res" src="/icons/items/stone.webp" alt="pierres" /></span> | 3 × 6 |
+| <img class="pv-icon" src="/icons/buildings/LogisticsCenter.webp" alt="" /> | **Centre logistique** | <span class="pv-cost">5 <img class="pv-res" src="/icons/items/log.webp" alt="bûches" /></span> <span class="pv-cost">5 <img class="pv-res" src="/icons/items/stone.webp" alt="pierres" /></span> | 5 × 5 |
+| <img class="pv-icon" src="/icons/buildings/PotatoField.webp" alt="" /> | **Champ de pommes de terre** | Gratuit | de 2 × 2 à 10 × 10 |
+| <img class="pv-icon" src="/icons/buildings/BerryHut.webp" alt="" /> | **Cabane de baies** | <span class="pv-cost">10 <img class="pv-res" src="/icons/items/log.webp" alt="bûches" /></span> <span class="pv-cost">5 <img class="pv-res" src="/icons/items/stone.webp" alt="pierres" /></span> | 4 × 4 |
+| <img class="pv-icon" src="/icons/buildings/RangerCabin.webp" alt="" /> | **Cabane du garde forestier** | <span class="pv-cost">20 <img class="pv-res" src="/icons/items/log.webp" alt="bûches" /></span> | 4 × 4 |
+| <img class="pv-icon" src="/icons/buildings/WoodcuttingWorkshop.webp" alt="" /> | **Atelier de coupe de bois** | <span class="pv-cost">10 <img class="pv-res" src="/icons/items/log.webp" alt="bûches" /></span> | 4 × 4 |
+
+:::tip[Le premier bâtiment]
+La **petite aire de stockage** ne demande aucun matériau : c'est le bon premier chantier, puisque rien n'est récolté tant qu'aucun stockage n'a de place.
+:::
+
+## Du chantier au bâtiment
+Un bâtiment posé devient un **chantier**, qui passe par trois étapes. Sa fiche affiche l'avancement (« Construction : N % ») et une jauge par matériau à apporter.
+
+| Étape | Ce qui se passe | Part de l'avancement |
+|---|---|---|
+| 1. Défrichage | Les arbres, rochers et buissons de l'emprise sont retirés, puis une pelle dégage chaque case. | 20 % |
+| 2. Livraison | Les habitants apportent les matériaux (une brouette tourne au-dessus du chantier). | 30 % |
+| 3. Construction | Les bâtisseurs montent le bâtiment, qui sort du sol. | 50 % |
+
+- Pendant la pose, la **touche R** tourne le bâtiment ; il commence avec sa porte tournée vers la caméra. Gardez **Maj** enfoncée en relâchant le clic pour enchaîner plusieurs poses.
+- Une **flèche verte** au sol montre chaque entrée pendant la pose et tant que la fiche est ouverte.
+- Rien ne peut être posé sur une route commandée qui n'est pas encore tracée.
+- Chaque bâtiment peut être **suspendu** (ses tâches s'arrêtent, ses habitants perdent leur logement) ou **détruit** depuis sa fiche. **Rien n'est rendu** à la destruction : ni matériaux, ni contenu.
+
+## Voiries
+| | Route | Coût | Effet |
+|---|---|---|---|
+| <img class="pv-icon" src="/icons/buildings/DirtRoad.webp" alt="" /> | **Route de terre** | Gratuite | Les habitants y marchent **10 % plus vite**. |
+| <img class="pv-icon" src="/icons/buildings/PavedRoad.webp" alt="" /> | **Route pavée** | 1 pierre par case | Les habitants y marchent **20 % plus vite**. |
+
+Les habitants font un détour par les routes quand le trajet y gagne du temps. Une route qui arrive devant une porte se prolonge jusqu'à elle. Chaque case de route se détruit depuis sa propre fiche.
+
+## Habitation
+
+<Model3D
+	title="Maison simple"
+	variants={[
+		{ src: 'house-a', label: 'Maison A' },
+		{ src: 'house-b', label: 'Maison B' },
+		{ src: 'house-c', label: 'Maison C' },
+	]}
+	caption="Trois variantes de chaumière, choisies au hasard à la pose."
+/>
+
+**Maison simple** · <span class="pv-cost">10 <img class="pv-res" src="/icons/items/log.webp" alt="bûches" /></span> · 5 × 5 cases
+
+- Loge les habitants et en fait **naître de nouveaux**.
+- Garde **5 bois de chauffe et 5 nourritures** en tout. Les habitants y mangent et s'y réchauffent.
+- Le feu brûle tant qu'il y a du bois et que la saison est froide : la cheminée fume, et le bois part d'autant plus vite que la saison est froide.
+- En hiver, la neige couvre le chaume par plaques, avec des glaçons au bord du toit.
+
+## Stockages
+
+<Model3D title="Petite aire de stockage" src="small-storage" />
+
+**Petite aire de stockage** · gratuite · 3 × 3 cases
+
+- Garde **pierre, bûches et bois de chauffe** : une pile de 4 objets par case, 9 piles en tout, visibles sur leur case.
+- **Aucun matériau** à apporter : seulement le défrichage. Les habitants peuvent marcher dedans.
+- Une ouverture au milieu du côté avant ; une route qui arrive devant se prolonge jusqu'à elle.
+
+<Model3D title="Petit cellier" src="small-cellar" />
+
+**Petit cellier** · <span class="pv-cost">5 <img class="pv-res" src="/icons/items/log.webp" alt="bûches" /></span> <span class="pv-cost">10 <img class="pv-res" src="/icons/items/stone.webp" alt="pierres" /></span> · 3 × 6 cases
+
+- Garde **100 nourritures** en tout, baies et pommes de terre confondues.
+- Un cellier de pierres sous une voûte de planches, avec sa porte sur un petit côté.
+
+## Bâtiments généraux
+
+<Model3D title="Centre logistique" src="logistics-center" />
+
+**Centre logistique** · <span class="pv-cost">5 <img class="pv-res" src="/icons/items/log.webp" alt="bûches" /></span> <span class="pv-cost">5 <img class="pv-res" src="/icons/items/stone.webp" alt="pierres" /></span> · 5 × 5 cases
+
+- Ses **logisticiens** apportent nourriture et bois de chauffe aux maisons reliées au centre par un chemin.
+- Une place pavée avec une entrée au milieu de chaque côté et un poteau indicateur.
+
+## Nourriture
+
+**Champ de pommes de terre** · gratuit · de 2 × 2 à 10 × 10 cases
+
+- Se trace comme un rectangle, à la taille voulue.
+- Les **cultivateurs** le labourent au printemps, il pousse en été, ils le récoltent en automne ; il est remis à zéro en hiver.
+
+<Model3D title="Cabane de baies" src="berry-hut" />
+
+**Cabane de baies** · <span class="pv-cost">10 <img class="pv-res" src="/icons/items/log.webp" alt="bûches" /></span> <span class="pv-cost">5 <img class="pv-res" src="/icons/items/stone.webp" alt="pierres" /></span> · 4 × 4 cases
+
+- **2 cueilleurs** attachés au plus ; son cercle de travail fait **25 cases** de rayon.
+- Garde **60 baies**, visibles dans douze paniers sur sa terrasse, et à part **20 souches**. Les habitants viennent s'y nourrir.
+- Son bouton **« Planter un buisson »** pose de nouveaux buissons dans son cercle : un cueilleur y plante une souche, qui devient un buisson sans baies.
+
+## Ressources
+
+<Model3D title="Cabane du garde forestier" src="ranger-cabin" />
+
+**Cabane du garde forestier** · <span class="pv-cost">20 <img class="pv-res" src="/icons/items/log.webp" alt="bûches" /></span> · 4 × 4 cases
+
+- **3 bûcherons** attachés au plus ; son cercle de travail fait **30 cases** de rayon. Sa fiche compte les arbres du cercle.
+- Les bûcherons attachés ramassent, coupent et **replantent** seulement dans le cercle, à un rythme qui dépend du nombre d'arbres :
+
+| Arbres dans le cercle | Plantations avant la coupe suivante |
+|---|---|
+| Moins de 80 | 2 |
+| De 80 à 99 | 1 |
+| 100 et plus | aucune : ils coupent librement |
+
+## Artisanat
+
+<Model3D title="Atelier de coupe de bois" src="woodcutting-workshop" />
+
+**Atelier de coupe de bois** · <span class="pv-cost">10 <img class="pv-res" src="/icons/items/log.webp" alt="bûches" /></span> · 4 × 4 cases
+
+- Un **fendeur** au billot transforme **1 bûche en 2 bois de chauffe**.
+- Deux stocks séparés : **20 bûches** et **40 bois de chauffe**, visibles sous l'appentis.
+- Sa fiche règle la **limite globale de bois de chauffe** du village (40 par défaut, sans maximum). Elle compte aussi le bois des maisons et des autres stockages, et arrête la coupe une fois atteinte.
+- La hache plantée dans le billot disparaît quand le fendeur y travaille.
