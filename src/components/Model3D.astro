@@ -5,6 +5,7 @@
 //   <Model3D title="Maison simple" variants={[{ src: 'house-a', label: 'A' }, { src: 'house-b', label: 'B' }]} />
 // `toggles` ajoute un second choix qui se combine au premier : son suffixe s'ajoute au nom du fichier
 // (ex. villager-blue + '-female' = villager-blue-female.glb).
+// `age` ajoute un curseur d'âge (habitants) : taille et cadence des pas d'un enfant, comme dans le jeu (ADR 0133).
 interface Variant {
 	src: string;
 	label: string;
@@ -22,10 +23,14 @@ interface Props {
 	src?: string;
 	variants?: Variant[];
 	toggles?: Toggle[];
+	/** Shows an age slider (villagers only). */
+	age?: boolean;
 	caption?: string;
 }
 
-const { title, src, variants = [], toggles = [], caption } = Astro.props;
+const { title, src, variants = [], toggles = [], age = false, caption } = Astro.props;
+/** Age shown when the page opens: an adult, like the villagers at the start of a game (18 to 30). */
+const START_AGE = 20;
 const lang = Astro.locals.starlightRoute?.locale === 'en' ? 'en' : 'fr';
 const base = src ?? variants[0]?.src ?? '';
 const first = `/models/${base}${toggles[0]?.suffix ?? ''}.glb`;
@@ -38,6 +43,9 @@ const text = {
 		loading: 'Chargement du modèle…',
 		error: 'Le modèle 3D n’a pas pu être chargé.',
 		animations: 'Animations',
+		age: 'Âge',
+		years: ['{0} an', '{0} ans'],
+		child: 'enfant, {0} % de sa taille',
 		clips: {
 			Idle: 'Repos',
 			Walk: 'Marche',
@@ -59,6 +67,9 @@ const text = {
 		loading: 'Loading model…',
 		error: 'The 3D model could not be loaded.',
 		animations: 'Animations',
+		age: 'Age',
+		years: ['{0} year', '{0} years'],
+		child: 'child, {0}% of adult height',
 		clips: {
 			Idle: 'Idle',
 			Walk: 'Walk',
@@ -76,7 +87,7 @@ const text = {
 }[lang];
 ---
 
-<figure class="pv-model not-content" data-src={first} data-base={base} data-labels={JSON.stringify(text.clips)}>
+<figure class="pv-model not-content" data-src={first} data-base={base} data-labels={JSON.stringify(text.clips)} data-age-text={age ? JSON.stringify({ years: text.years, child: text.child }) : undefined}>
 	<div class="pv-model__head">
 		<figcaption class="pv-model__title">{title}</figcaption>
 		{
@@ -126,6 +137,15 @@ const text = {
 		<p class="pv-model__hint">{text.hint}</p>
 	</div>
 	<div class="pv-model__clips" role="group" aria-label={text.animations} hidden></div>
+	{
+		age && (
+			<label class="pv-model__age">
+				<span class="pv-model__age-name">{text.age}</span>
+				<input type="range" min="0" max="30" step="0.1" value={START_AGE} data-age />
+				<output class="pv-model__age-value" data-age-value>{text.years[1].replace('{0}', String(START_AGE))}</output>
+			</label>
+		)
+	}
 	{caption && <p class="pv-model__caption">{caption}</p>}
 </figure>
 
@@ -340,6 +360,29 @@ const text = {
 	.pv-model__toggle:active {
 		translate: 0 2px;
 		box-shadow: 0 1px 0 var(--pv-ink);
+	}
+
+	.pv-model__age {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: 4px 12px;
+		margin: 10px 4px 0;
+		color: var(--pv-parchment-light);
+		text-shadow: 0 1px 0 var(--pv-ink);
+		font-weight: 800;
+	}
+
+	.pv-model__age input {
+		flex: 1 1 160px;
+		min-width: 0;
+		accent-color: var(--pv-leaf);
+		cursor: pointer;
+	}
+
+	.pv-model__age-value {
+		min-width: 13ch;
+		font-size: 0.92rem;
 	}
 
 	.pv-model__caption {

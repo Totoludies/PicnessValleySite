@@ -11,6 +11,8 @@ Chaque habitant a un nom, une taille et un caractère qui lui sont propres. Il v
 
 Un habitant sur deux est une femme : elle porte la même tenue, avec une poitrine et des cheveux longs. Choisissez le courant et le sexe dans le lecteur.
 
+Les habitants du départ ont entre 18 et 30 ans. Un habitant né dans une maison commence à 0 an, au quart de la taille d'un adulte, et grandit jusqu'à 4 ans en trottinant à petits pas pressés. Un enfant ne travaille pas : sa fiche affiche « Enfant » à la place du métier. Le curseur d'âge du lecteur le montre à tout âge.
+
 <Model3D
 	title="Un habitant"
 	variants={[
@@ -23,6 +25,7 @@ Un habitant sur deux est une femme : elle porte la même tenue, avec une poitrin
 		{ suffix: '', label: 'Homme', icon: '/icons/sex/male.webp' },
 		{ suffix: '-female', label: 'Femme', icon: '/icons/sex/female.webp' },
 	]}
+	age
 />
 
 ## Les jauges

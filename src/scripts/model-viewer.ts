@@ -12,6 +12,16 @@ const ONCE_CLIPS = new Set(['Death', 'TakeOff', 'Land']);
 const CLIP_ORDER = ['Idle', 'Walk', 'Carry', 'Work', 'Chop', 'Dig', 'Death', 'Sleep', 'TakeOff', 'Fly', 'Land'];
 /** Matériaux sans contour (feuilles fines : le contour de la face arrière traverserait la face avant). */
 const NO_OUTLINE = new Set(['TownToonDragonWing']);
+/** Villager growth, as in the game (TownWalker, ADR 0133): 1/4 of the adult size at birth, adult at 4 years. */
+const BIRTH_SIZE = 0.25;
+const ADULT_YEARS = 4;
+/** A child takes quicker steps (1 / growth), capped like the game's MAX_STEP_SPEED. */
+const MAX_STEP_SPEED = 2.5;
+const STEP_CLIPS = new Set(['Walk', 'Carry']);
+
+function growth(years: number): number {
+	return BIRTH_SIZE + (1 - BIRTH_SIZE) * Math.min(Math.max(years / ADULT_YEARS, 0), 1);
+}
 
 type Labels = Record<string, string>;
 
@@ -85,6 +95,9 @@ class Viewer {
 	private visible = false;
 	private token = 0;
 	private home = { pos: new THREE.Vector3(), target: new THREE.Vector3() };
+	/** Position of the model on the ground at adult size (scaled with the age). */
+	private offset = new THREE.Vector3();
+	private growth = 1;
 
 	constructor(el: HTMLElement) {
 		this.el = el;
@@ -142,6 +155,36 @@ class Viewer {
 			this.setAutoRotate(!this.controls.autoRotate),
 		);
 		el.querySelector<HTMLButtonElement>('[data-reset]')?.addEventListener('click', () => this.resetView());
+		const age = el.querySelector<HTMLInputElement>('[data-age]');
+		if (age) {
+			const update = () => this.setAge(Number(age.value));
+			age.addEventListener('input', update);
+			update();
+		}
+	}
+
+	private setAge(years: number) {
+		const text = JSON.parse(this.el.dataset.ageText ?? '{}') as { years: string[]; child: string };
+		const whole = Math.floor(years);
+		this.growth = growth(years);
+		let label = text.years[whole < 2 ? 0 : 1].replace('{0}', String(whole));
+		if (this.growth < 1) label += ` (${text.child.replace('{0}', String(Math.round(this.growth * 100)))})`;
+		const out = this.el.querySelector('[data-age-value]');
+		if (out) out.textContent = label;
+		this.applyGrowth();
+	}
+
+	/** Scales the model around its feet and speeds up the steps of a child. */
+	private applyGrowth() {
+		if (this.model) {
+			this.model.scale.setScalar(this.growth);
+			this.model.position.copy(this.offset).multiplyScalar(this.growth);
+		}
+		if (this.action) this.action.timeScale = this.stepSpeed(this.action.getClip());
+	}
+
+	private stepSpeed(clip: THREE.AnimationClip): number {
+		return STEP_CLIPS.has(clip.name) ? Math.min(1 / this.growth, MAX_STEP_SPEED) : 1;
 	}
 
 	/** URL of the model chosen by the pressed variant and toggle buttons. */
@@ -192,6 +235,7 @@ class Viewer {
 			model.userData.pvToon = true;
 		}
 		model.position.set(0, 0, 0);
+		model.scale.setScalar(1);
 
 		this.clips = [...gltf.animations].sort((a, b) => {
 			const ia = CLIP_ORDER.indexOf(a.name);
@@ -210,9 +254,10 @@ class Viewer {
 		const box = new THREE.Box3().setFromObject(model, true);
 		const size = box.getSize(new THREE.Vector3());
 		const center = box.getCenter(new THREE.Vector3());
-		model.position.set(-center.x, -box.min.y, -center.z);
+		this.offset.set(-center.x, -box.min.y, -center.z);
 		this.scene.add(model);
 		this.model = model;
+		this.applyGrowth();
 
 		const radius = Math.max(size.x, size.y, size.z) * 0.5;
 		const height = size.y;
@@ -266,6 +311,7 @@ class Viewer {
 		next.reset();
 		next.setLoop(once ? THREE.LoopOnce : THREE.LoopRepeat, Infinity);
 		next.clampWhenFinished = once;
+		next.timeScale = this.stepSpeed(clip);
 		if (this.action && this.action !== next) next.crossFadeFrom(this.action, 0.25, false);
 		next.play();
 		this.action = next;
