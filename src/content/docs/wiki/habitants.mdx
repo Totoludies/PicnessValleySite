@@ -9,13 +9,19 @@ import Model3D from '../../../components/Model3D.astro';
 
 Chaque habitant a un nom, une taille et un caractère qui lui sont propres. Il vit sa vie tout seul : vous lui donnez un métier ou un ordre, il s'occupe du reste. Sa tenue dépend de son [courant de pensée](/wiki/factions/), tiré au hasard à sa naissance.
 
+Un habitant sur deux est une femme : elle porte la même tenue, avec une poitrine et des cheveux longs. Choisissez le courant et le sexe dans le lecteur.
+
 <Model3D
 	title="Un habitant"
 	variants={[
-		{ src: 'villager-blue', label: 'Bleu' },
-		{ src: 'villager-yellow', label: 'Jaune' },
-		{ src: 'villager-green', label: 'Vert' },
-		{ src: 'villager-red', label: 'Rouge' },
+		{ src: 'villager-blue', label: 'Déistes', icon: '/icons/factions/deists.webp' },
+		{ src: 'villager-yellow', label: 'Libéraux', icon: '/icons/factions/liberals.webp' },
+		{ src: 'villager-green', label: 'Bayésiens', icon: '/icons/factions/bayesians.webp' },
+		{ src: 'villager-red', label: 'Visionnaires', icon: '/icons/factions/visionaries.webp' },
+	]}
+	toggles={[
+		{ suffix: '', label: 'Homme', icon: '/icons/sex/male.webp' },
+		{ suffix: '-female', label: 'Femme', icon: '/icons/sex/female.webp' },
 	]}
 />
 

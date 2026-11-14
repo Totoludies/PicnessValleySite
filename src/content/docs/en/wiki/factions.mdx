@@ -53,10 +53,14 @@ Each school has its own outfit, easy to spot from afar in the village. The anima
 <Model3D
 	title="The villagers"
 	variants={[
-		{ src: 'villager-blue', label: 'Deist' },
-		{ src: 'villager-yellow', label: 'Liberal' },
-		{ src: 'villager-green', label: 'Bayesian' },
-		{ src: 'villager-red', label: 'Visionary' },
+		{ src: 'villager-blue', label: 'Deists', icon: '/icons/factions/deists.webp' },
+		{ src: 'villager-yellow', label: 'Liberals', icon: '/icons/factions/liberals.webp' },
+		{ src: 'villager-green', label: 'Bayesians', icon: '/icons/factions/bayesians.webp' },
+		{ src: 'villager-red', label: 'Visionaries', icon: '/icons/factions/visionaries.webp' },
+	]}
+	toggles={[
+		{ suffix: '', label: 'Man', icon: '/icons/sex/male.webp' },
+		{ suffix: '-female', label: 'Woman', icon: '/icons/sex/female.webp' },
 	]}
 	caption="Idle, walk, carry, build, chop, dig and death: the villagers' seven animations."
 />

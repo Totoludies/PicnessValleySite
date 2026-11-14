@@ -129,21 +129,28 @@ class Viewer {
 			{ rootMargin: '200px' },
 		).observe(el);
 
-		el.querySelectorAll<HTMLButtonElement>('[data-variant]').forEach((b) =>
-			b.addEventListener('click', () => {
-				el.querySelectorAll('[data-variant]').forEach((x) => x.setAttribute('aria-pressed', String(x === b)));
-				this.show(b.dataset.variant!);
-			}),
-		);
+		// Two independent choices (variant, then toggle): each group keeps one pressed button.
+		for (const key of ['variant', 'suffix']) {
+			el.querySelectorAll<HTMLButtonElement>(`[data-${key}]`).forEach((b) =>
+				b.addEventListener('click', () => {
+					el.querySelectorAll(`[data-${key}]`).forEach((x) => x.setAttribute('aria-pressed', String(x === b)));
+					this.show(this.currentVariant());
+				}),
+			);
+		}
 		el.querySelector<HTMLButtonElement>('[data-rotate]')?.addEventListener('click', () =>
 			this.setAutoRotate(!this.controls.autoRotate),
 		);
 		el.querySelector<HTMLButtonElement>('[data-reset]')?.addEventListener('click', () => this.resetView());
 	}
 
+	/** URL of the model chosen by the pressed variant and toggle buttons. */
 	private currentVariant(): string {
-		const pressed = this.el.querySelector<HTMLElement>('[data-variant][aria-pressed="true"]');
-		return pressed?.dataset.variant ?? this.el.dataset.src!;
+		const pressed = (key: string) =>
+			this.el.querySelector<HTMLElement>(`[data-${key}][aria-pressed="true"]`)?.dataset[key];
+		const base = pressed('variant') ?? this.el.dataset.base;
+		if (!base) return this.el.dataset.src!;
+		return `/models/${base}${pressed('suffix') ?? ''}.glb`;
 	}
 
 	private setAutoRotate(on: boolean) {

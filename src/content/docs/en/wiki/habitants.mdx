@@ -9,13 +9,19 @@ import Model3D from '../../../../components/Model3D.astro';
 
 Each villager has their own name, height and character. They live their life on their own: you give them a job or an order, they take care of the rest. Their outfit depends on their [school of thought](/en/wiki/factions/), picked at random at birth.
 
+One villager in two is a woman: she wears the same outfit, with a bust and long hair. Pick the school and the sex in the viewer.
+
 <Model3D
 	title="A villager"
 	variants={[
-		{ src: 'villager-blue', label: 'Blue' },
-		{ src: 'villager-yellow', label: 'Yellow' },
-		{ src: 'villager-green', label: 'Green' },
-		{ src: 'villager-red', label: 'Red' },
+		{ src: 'villager-blue', label: 'Deists', icon: '/icons/factions/deists.webp' },
+		{ src: 'villager-yellow', label: 'Liberals', icon: '/icons/factions/liberals.webp' },
+		{ src: 'villager-green', label: 'Bayesians', icon: '/icons/factions/bayesians.webp' },
+		{ src: 'villager-red', label: 'Visionaries', icon: '/icons/factions/visionaries.webp' },
+	]}
+	toggles={[
+		{ suffix: '', label: 'Man', icon: '/icons/sex/male.webp' },
+		{ suffix: '-female', label: 'Woman', icon: '/icons/sex/female.webp' },
 	]}
 />
 

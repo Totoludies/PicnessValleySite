@@ -53,10 +53,14 @@ Chaque courant a sa tenue, que l'on reconnaît de loin dans le village. Les anim
 <Model3D
 	title="Les habitants"
 	variants={[
-		{ src: 'villager-blue', label: 'Déiste' },
-		{ src: 'villager-yellow', label: 'Libéral' },
-		{ src: 'villager-green', label: 'Bayésien' },
-		{ src: 'villager-red', label: 'Visionnaire' },
+		{ src: 'villager-blue', label: 'Déistes', icon: '/icons/factions/deists.webp' },
+		{ src: 'villager-yellow', label: 'Libéraux', icon: '/icons/factions/liberals.webp' },
+		{ src: 'villager-green', label: 'Bayésiens', icon: '/icons/factions/bayesians.webp' },
+		{ src: 'villager-red', label: 'Visionnaires', icon: '/icons/factions/visionaries.webp' },
+	]}
+	toggles={[
+		{ suffix: '', label: 'Homme', icon: '/icons/sex/male.webp' },
+		{ suffix: '-female', label: 'Femme', icon: '/icons/sex/female.webp' },
 	]}
 	caption="Repos, marche, porter, construire, couper, creuser à la pelle et mort : les sept animations des habitants."
 />

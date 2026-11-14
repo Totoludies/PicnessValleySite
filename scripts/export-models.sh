@@ -15,7 +15,8 @@ run() {
 	"$BLENDER" --background "$GAME/ArtSource/$file.blend" --python scripts/export_glb.py -- "$TMP" "$@" | grep EXPORTED
 }
 
-run TownToonWalker villager-blue=Armature,WalkerBlue villager-yellow=Armature,WalkerYellow villager-red=Armature,WalkerRed villager-green=Armature,WalkerGreen
+run TownToonWalker villager-blue=Armature,WalkerBlue villager-yellow=Armature,WalkerYellow villager-red=Armature,WalkerRed villager-green=Armature,WalkerGreen \
+	villager-blue-female=Armature,WalkerBlueFemale villager-yellow-female=Armature,WalkerYellowFemale villager-red-female=Armature,WalkerRedFemale villager-green-female=Armature,WalkerGreenFemale
 run TownToonDragon dragon=Armature,Dragon
 run TownToonHouse house-a=TownToonHouse house-b=TownToonHouseB house-c=TownToonHouseC
 run TownToonForester ranger-cabin=TownToonForester

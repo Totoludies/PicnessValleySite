@@ -3,21 +3,32 @@
 // Usage dans une page .mdx du wiki :
 //   <Model3D src="house-a" title="Maison simple" />
 //   <Model3D title="Maison simple" variants={[{ src: 'house-a', label: 'A' }, { src: 'house-b', label: 'B' }]} />
+// `toggles` ajoute un second choix qui se combine au premier : son suffixe s'ajoute au nom du fichier
+// (ex. villager-blue + '-female' = villager-blue-female.glb).
 interface Variant {
 	src: string;
 	label: string;
+	/** Optional small image shown before the label (e.g. a faction emblem). */
+	icon?: string;
+}
+interface Toggle {
+	/** Appended to the model name of the chosen variant ('' for the default one). */
+	suffix: string;
+	label: string;
+	icon: string;
 }
 interface Props {
 	title: string;
 	src?: string;
 	variants?: Variant[];
+	toggles?: Toggle[];
 	caption?: string;
 }
 
-const { title, src, variants = [], caption } = Astro.props;
+const { title, src, variants = [], toggles = [], caption } = Astro.props;
 const lang = Astro.locals.starlightRoute?.locale === 'en' ? 'en' : 'fr';
-const file = (name: string) => `/models/${name}.glb`;
-const first = file(src ?? variants[0]?.src ?? '');
+const base = src ?? variants[0]?.src ?? '';
+const first = `/models/${base}${toggles[0]?.suffix ?? ''}.glb`;
 
 const text = {
 	fr: {
@@ -65,8 +76,40 @@ const text = {
 }[lang];
 ---
 
-<figure class="pv-model not-content" data-src={first} data-labels={JSON.stringify(text.clips)}>
-	<figcaption class="pv-model__title">{title}</figcaption>
+<figure class="pv-model not-content" data-src={first} data-base={base} data-labels={JSON.stringify(text.clips)}>
+	<div class="pv-model__head">
+		<figcaption class="pv-model__title">{title}</figcaption>
+		{
+			variants.length > 1 && (
+				<div class="pv-model__variants">
+					{variants.map((v, i) => (
+						<button type="button" class="pv-model__chip" data-variant={v.src} aria-pressed={String(i === 0)}>
+							{v.icon && <img src={v.icon} alt="" width="22" height="20" />}
+							{v.label}
+						</button>
+					))}
+				</div>
+			)
+		}
+		{
+			toggles.length > 1 && (
+				<div class="pv-model__toggles">
+					{toggles.map((t, i) => (
+						<button
+							type="button"
+							class="pv-model__toggle"
+							data-suffix={t.suffix}
+							aria-pressed={String(i === 0)}
+							aria-label={t.label}
+							title={t.label}
+						>
+							<img src={t.icon} alt="" width="26" height="34" />
+						</button>
+					))}
+				</div>
+			)
+		}
+	</div>
 	<div class="pv-model__stage">
 		<p class="pv-model__status pv-model__status--loading">{text.loading}</p>
 		<p class="pv-model__status pv-model__status--error">{text.error}</p>
@@ -82,17 +125,6 @@ const text = {
 		</div>
 		<p class="pv-model__hint">{text.hint}</p>
 	</div>
-	{
-		variants.length > 1 && (
-			<div class="pv-model__variants">
-				{variants.map((v, i) => (
-					<button type="button" class="pv-model__chip" data-variant={file(v.src)} aria-pressed={String(i === 0)}>
-						{v.label}
-					</button>
-				))}
-			</div>
-		)
-	}
 	<div class="pv-model__clips" role="group" aria-label={text.animations} hidden></div>
 	{caption && <p class="pv-model__caption">{caption}</p>}
 </figure>
@@ -112,8 +144,16 @@ const text = {
 		box-shadow: 0 5px 0 rgba(43, 29, 20, 0.35), 0 14px 30px rgba(43, 29, 20, 0.2);
 	}
 
-	.pv-model__title {
+	.pv-model__head {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: 6px 14px;
 		margin: 0 4px 8px;
+	}
+
+	.pv-model__title {
+		margin: 0;
 		font-family: var(--pv-font-title);
 		font-size: 1.35rem;
 		line-height: 1.2;
@@ -224,6 +264,9 @@ const text = {
 		display: flex;
 		flex-wrap: wrap;
 		gap: 6px;
+	}
+
+	.pv-model__clips {
 		margin-top: 10px;
 	}
 
@@ -232,6 +275,9 @@ const text = {
 	}
 
 	.pv-model :global(.pv-model__chip) {
+		display: inline-flex;
+		align-items: center;
+		gap: 6px;
 		padding: 4px 14px;
 		font: inherit;
 		font-size: 0.92rem;
@@ -244,6 +290,13 @@ const text = {
 		cursor: pointer;
 	}
 
+	.pv-model__chip img {
+		width: 22px;
+		height: auto;
+		margin: 0 0 0 -6px;
+		filter: drop-shadow(0 1px 0 rgba(43, 29, 20, 0.35));
+	}
+
 	.pv-model :global(.pv-model__chip[aria-pressed='true']) {
 		color: #fff;
 		text-shadow: 0 1px 0 var(--pv-leaf-dark);
@@ -251,6 +304,40 @@ const text = {
 	}
 
 	.pv-model :global(.pv-model__chip:active) {
+		translate: 0 2px;
+		box-shadow: 0 1px 0 var(--pv-ink);
+	}
+
+	.pv-model__toggles {
+		display: flex;
+		gap: 6px;
+		margin-left: auto;
+	}
+
+	.pv-model__toggle {
+		display: grid;
+		place-items: center;
+		width: 40px;
+		height: 40px;
+		padding: 0;
+		background: linear-gradient(#fffaf0, var(--pv-parchment) 60%, var(--pv-parchment-dark));
+		border: 2px solid var(--pv-ink);
+		border-radius: 12px;
+		box-shadow: 0 3px 0 var(--pv-ink);
+		cursor: pointer;
+	}
+
+	.pv-model__toggle img {
+		width: auto;
+		height: 28px;
+		filter: drop-shadow(0 1px 0 rgba(43, 29, 20, 0.35));
+	}
+
+	.pv-model__toggle[aria-pressed='true'] {
+		background: linear-gradient(var(--pv-leaf-light), var(--pv-leaf));
+	}
+
+	.pv-model__toggle:active {
 		translate: 0 2px;
 		box-shadow: 0 1px 0 var(--pv-ink);
 	}
