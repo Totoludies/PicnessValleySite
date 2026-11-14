@@ -20,6 +20,8 @@ const MAX_STEP_SPEED = 2.5;
 const STEP_CLIPS = new Set(['Walk', 'Carry']);
 /** Hair and iris are a light gray in the model: the game multiplies them by colour / TINT_GRAY (ADR 0135). */
 const TINT_GRAY = 0.85;
+/** Hairstyle meshes of a villager: WalkerBlueHair1..4 (ADR 0136), only the chosen one is shown. */
+const HAIRSTYLE = /Hair(\d+)$/;
 
 function growth(years: number): number {
 	return BIRTH_SIZE + (1 - BIRTH_SIZE) * Math.min(Math.max(years / ADULT_YEARS, 0), 1);
@@ -102,6 +104,8 @@ class Viewer {
 	private growth = 1;
 	/** Chosen sRGB colour per material part ('Hair', 'Eyes'). */
 	private tints = new Map<string, number[]>();
+	/** Chosen hairstyle number (1 = the first one of each sex). */
+	private hairstyle = 1;
 
 	constructor(el: HTMLElement) {
 		this.el = el;
@@ -159,6 +163,15 @@ class Viewer {
 			this.setAutoRotate(!this.controls.autoRotate),
 		);
 		el.querySelector<HTMLButtonElement>('[data-reset]')?.addEventListener('click', () => this.resetView());
+		el.querySelectorAll<HTMLButtonElement>('[data-style]').forEach((b) =>
+			b.addEventListener('click', () => {
+				this.hairstyle = Number(b.dataset.style);
+				el.querySelectorAll<HTMLElement>('[data-style]').forEach((x) =>
+					x.setAttribute('aria-pressed', String(Number(x.dataset.style) === this.hairstyle)),
+				);
+				this.applyHairstyle();
+			}),
+		);
 		el.querySelectorAll<HTMLButtonElement>('[data-part]').forEach((b) => {
 			const part = b.dataset.part!;
 			const pick = () => {
@@ -188,6 +201,16 @@ class Viewer {
 		const out = this.el.querySelector('[data-age-value]');
 		if (out) out.textContent = label;
 		this.applyGrowth();
+	}
+
+	/** Shows the hairstyle buttons of the chosen sex, and only the chosen hairstyle mesh. */
+	private applyHairstyle() {
+		const suffix = this.el.querySelector<HTMLElement>('[data-suffix][aria-pressed="true"]')?.dataset.suffix ?? '';
+		this.el.querySelectorAll<HTMLElement>('[data-style]').forEach((b) => (b.hidden = b.dataset.styleSet !== suffix));
+		this.model?.traverse((o) => {
+			const match = HAIRSTYLE.exec(o.name);
+			if (match) o.visible = Number(match[1]) === this.hairstyle;
+		});
 	}
 
 	/** Tints the materials named after a part (hair, eyes) with the chosen colour. */
@@ -296,6 +319,7 @@ class Viewer {
 		this.model = model;
 		this.applyGrowth();
 		this.applyTints();
+		this.applyHairstyle();
 
 		const radius = Math.max(size.x, size.y, size.z) * 0.5;
 		const height = size.y;

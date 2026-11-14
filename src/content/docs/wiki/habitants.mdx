@@ -9,7 +9,7 @@ import Model3D from '../../../components/Model3D.astro';
 
 Chaque habitant a un nom, une taille et un caractère qui lui sont propres. Il vit sa vie tout seul : vous lui donnez un métier ou un ordre, il s'occupe du reste. Sa tenue dépend de son [courant de pensée](/wiki/factions/), tiré au hasard à sa naissance.
 
-Un habitant sur deux est une femme : elle porte la même tenue, avec une poitrine et des cheveux longs. Chacun a aussi sa couleur de cheveux (noirs, bruns, blonds ou bleus) et d'yeux (noirs, marron, bleus ou verts), tirée au hasard quel que soit son courant. Choisissez le courant, le sexe et les couleurs dans le lecteur.
+Un habitant sur deux est une femme : elle porte la même tenue, avec une poitrine. Chacun a aussi sa coiffure (cheveux courts, rasés, mi-longs ou queue de cheval pour un homme ; cheveux longs, tresses, carré ou chignon pour une femme), sa couleur de cheveux (noirs, bruns, blonds ou bleus) et d'yeux (noirs, marron, bleus ou verts), tirées au hasard quel que soit son courant. Choisissez le courant, le sexe, la coiffure et les couleurs dans le lecteur.
 
 Les habitants du départ ont entre 18 et 30 ans. Un habitant né dans une maison commence à 0 an, au quart de la taille d'un adulte, et grandit jusqu'à 4 ans en trottinant à petits pas pressés. Un enfant ne travaille pas : sa fiche affiche « Enfant » à la place du métier. Le curseur d'âge du lecteur le montre à tout âge.
 
@@ -25,6 +25,10 @@ Les habitants du départ ont entre 18 et 30 ans. Un habitant né dans une maison
 		{ suffix: '', label: 'Homme', icon: '/icons/sex/male.webp' },
 		{ suffix: '-female', label: 'Femme', icon: '/icons/sex/female.webp' },
 	]}
+	hairstyles={{
+		'': ['Courts', 'Rasés', 'Mi-longs', 'Queue de cheval'],
+		'-female': ['Longs', 'Tresses', 'Carré', 'Chignon'],
+	}}
 	colors
 	age
 />

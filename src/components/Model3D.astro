@@ -7,6 +7,8 @@
 // (ex. villager-blue + '-female' = villager-blue-female.glb).
 // `age` ajoute un curseur d'âge (habitants) : taille et cadence des pas d'un enfant, comme dans le jeu (ADR 0133).
 // `colors` ajoute les couleurs des cheveux et des yeux (habitants, ADR 0135 du jeu).
+// `hairstyles` ajoute le choix de la coiffure : noms des coiffures par suffixe de `toggles` (le sexe) ; le modèle
+// contient un maillage par coiffure, nommé …Hair1 à …HairN (ADR 0136 du jeu), le lecteur n'affiche que le choisi.
 interface Variant {
 	src: string;
 	label: string;
@@ -28,10 +30,13 @@ interface Props {
 	age?: boolean;
 	/** Shows the hair and eye colours (villagers only). */
 	colors?: boolean;
+	/** Hairstyle names per toggle suffix ('' for the first toggle), in the order of the Hair1..N meshes. */
+	hairstyles?: Record<string, string[]>;
 	caption?: string;
 }
 
-const { title, src, variants = [], toggles = [], age = false, colors = false, caption } = Astro.props;
+const { title, src, variants = [], toggles = [], age = false, colors = false, hairstyles, caption } = Astro.props;
+const firstSuffix = toggles[0]?.suffix ?? '';
 /** Hair and eye colours of the villagers, as in the game (TownVillagerColors, sRGB), in the same order. */
 const HAIR_COLORS = [[0.13, 0.11, 0.11], [0.37, 0.25, 0.17], [0.86, 0.68, 0.36], [0.22, 0.4, 0.66]];
 const EYE_COLORS = [[0.07, 0.06, 0.07], [0.42, 0.25, 0.12], [0.2, 0.45, 0.85], [0.22, 0.58, 0.3]];
@@ -55,6 +60,7 @@ const text = {
 		animations: 'Animations',
 		age: 'Âge',
 		hair: 'Cheveux',
+		hairstyle: 'Coiffure',
 		eyes: 'Yeux',
 		hairNames: ['Noirs', 'Bruns', 'Blonds', 'Bleus'],
 		eyeNames: ['Noirs', 'Marron', 'Bleus', 'Verts'],
@@ -83,6 +89,7 @@ const text = {
 		animations: 'Animations',
 		age: 'Age',
 		hair: 'Hair',
+		hairstyle: 'Hairstyle',
 		eyes: 'Eyes',
 		hairNames: ['Black', 'Brown', 'Blond', 'Blue'],
 		eyeNames: ['Black', 'Brown', 'Blue', 'Green'],
@@ -155,6 +162,27 @@ const text = {
 		<p class="pv-model__hint">{text.hint}</p>
 	</div>
 	<div class="pv-model__clips" role="group" aria-label={text.animations} hidden></div>
+	{
+		hairstyles && (
+			<div class="pv-model__styles" role="group" aria-label={text.hairstyle}>
+				<span class="pv-model__swatches-name">{text.hairstyle}</span>
+				{Object.entries(hairstyles).map(([suffix, names]) =>
+					names.map((label, i) => (
+						<button
+							type="button"
+							class="pv-model__chip"
+							data-style={i + 1}
+							data-style-set={suffix}
+							aria-pressed={String(i === 0)}
+							hidden={suffix !== firstSuffix}
+						>
+							{label}
+						</button>
+					)),
+				)}
+			</div>
+		)
+	}
 	{
 		colors && (
 			<div class="pv-model__colors">
@@ -404,6 +432,18 @@ const text = {
 	.pv-model__toggle:active {
 		translate: 0 2px;
 		box-shadow: 0 1px 0 var(--pv-ink);
+	}
+
+	.pv-model__styles {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: 6px;
+		margin: 10px 4px 0;
+	}
+
+	.pv-model :global(.pv-model__chip[hidden]) {
+		display: none;
 	}
 
 	.pv-model__colors {
