@@ -2,7 +2,8 @@
 // Page d'accueil, partagée par / (français) et /en/ (anglais).
 import { Picture } from 'astro:assets';
 import Site from '../layouts/Site.astro';
-import keyArt from '../assets/key-art.webp';
+import illustration from '../assets/valley-illustration.webp';
+import logo from '../assets/logo.webp';
 import { routes, t, formatDate, type Lang } from '../i18n';
 import { getNotes, noteSlug, versionRange } from '../lib/notes';
 import { GAME_VERSION } from '../site.config';
@@ -17,49 +18,136 @@ const r = routes[lang];
 const latest = (await getNotes(lang)).slice(0, 2);
 ---
 
-<Site lang={lang} alternate={lang === 'fr' ? routes.en.home : routes.fr.home} image={keyArt.src}>
-	<section class="hero">
-		<div class="hero__art">
-			<Picture
-				src={keyArt}
-				formats={['avif', 'webp']}
-				fallbackFormat="webp"
-				widths={[640, 1024, 1600, 2000]}
-				sizes="100vw"
-				alt={lang === 'fr'
-					? "Picness Valley : quatre habitants se reposent autour d'une grande pierre blanche, dans une vallée fleurie au pied des montagnes, près d'un village."
-					: 'Picness Valley: four villagers rest around a large white stone, in a flowery valley below the mountains, near a village.'}
-				loading="eager"
-				fetchpriority="high"
-			/>
-		</div>
-		<div class="hero__panel wrap">
-			<p class="hero__tagline">{s.heroTagline}</p>
-			<div class="hero__actions">
-				<a class="btn btn--leaf" href={r.play}>▶ {s.heroPlay}</a>
-				<a class="btn" href={r.wiki}>{s.heroWiki}</a>
+<Site lang={lang} alternate={lang === 'fr' ? routes.en.home : routes.fr.home} image={illustration.src}>
+	<section class="intro" id="jeu">
+		<div class="intro__card">
+			<div class="intro__page">
+				<div class="intro__text">
+					<header class="intro__head">
+						<div class="intro__brand">
+						<h1 class="intro__logo">
+							<Picture
+								src={logo}
+								formats={['avif', 'webp']}
+								fallbackFormat="webp"
+								widths={[480, 800, 1200]}
+								sizes="(max-width: 1100px) 80vw, 420px"
+								alt="Picness Valley"
+								loading="eager"
+								fetchpriority="high"
+							/>
+						</h1>
+						<a class="intro__studio" href="https://www.totoludies.com/" target="_blank" rel="noopener">
+							<img src="/totoludies.webp" alt="" width="45" height="48" />
+							<span>{s.studioByline}</span>
+						</a>
+						</div>
+						<div class="intro__pitch">
+							<h2 class="intro__heading intro__heading--start">{s.pitchTitle}</h2>
+							{s.pitch.map((p) => <p>{p}</p>)}
+						</div>
+					</header>
+
+					<h2 class="intro__heading">{s.loreTitle}</h2>
+					<div class="intro__lore">
+						{s.lore.map((p) => <p>{p}</p>)}
+						<blockquote class="intro__quote">
+							<p>{s.loreQuote[0]}</p>
+							<p class="intro__blood">{s.loreQuote[1]}</p>
+						</blockquote>
+						{s.loreEnd.map((p) => <p>{p}</p>)}
+					</div>
+				</div>
+
+				<div class="intro__art">
+					<div class="intro__frame">
+						<Picture
+							src={illustration}
+							formats={['avif', 'webp']}
+							fallbackFormat="webp"
+							widths={[480, 800, 1200, 1600]}
+							sizes="(max-width: 1100px) 90vw, 34vw"
+							alt={s.illustrationAlt}
+							loading="eager"
+						/>
+					</div>
+					<div class="intro__play">
+						<a class="btn btn--leaf" href={r.play}>▶ {s.heroPlay}</a>
+						<a class="btn intro__wiki" href={r.wiki}>{s.heroWiki}</a>
+						<p class="intro__meta"><span class="badge">{s.alpha}</span> {s.version} {GAME_VERSION}</p>
+					</div>
+				</div>
 			</div>
-			<p class="hero__meta"><span class="badge">{s.alpha}</span> {s.version} {GAME_VERSION}</p>
 		</div>
 	</section>
 
-	<section class="section" id="jeu">
-		<div class="wrap pitch">
-			<div class="parchment pitch__card">
-				<h2 class="parchment__title">{s.pitchTitle}</h2>
-				{s.pitch.map((p) => <p>{p}</p>)}
+	<section class="section section--meadow" aria-labelledby="resources-title">
+		<div class="wrap">
+			<div class="section__head">
+				<h2 id="resources-title">{s.resourcesTitle}</h2>
+				<p>{s.resourcesIntro}</p>
 			</div>
-			<ul class="needs" aria-label={s.needsTitle}>
-				{s.needs.map((n) => (
-					<li class="need">
-						<img src={`/icons/needs/${n.icon}.webp`} alt="" width="72" height="72" loading="lazy" />
-						<div>
-							<h3>{n.name}</h3>
-							<p>{n.text}</p>
-						</div>
-					</li>
-				))}
-			</ul>
+			<div class="economy">
+				<div class="economy__block">
+					<h3>{s.resourcesSubtitle}</h3>
+					<ul class="resources">
+						{s.resources.map((res) => (
+							<li class="resource">
+								<img src={`/icons/items/${res.icon}.webp`} alt="" width="56" height="56" loading="lazy" />
+								<div>
+									<h4>{res.name}</h4>
+									<p>{res.text}</p>
+								</div>
+							</li>
+						))}
+					</ul>
+					<p class="economy__tip">{s.resourcesTip}</p>
+				</div>
+				<div class="economy__block">
+					<h3>{s.needsTitle}</h3>
+					<ul class="needs">
+						{s.needs.map((n) => (
+							<li class="need">
+								<img src={`/icons/needs/${n.icon}.webp`} alt="" width="64" height="64" loading="lazy" />
+								<div>
+									<h4>{n.name}</h4>
+									<p>{n.text}</p>
+								</div>
+							</li>
+						))}
+					</ul>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<section class="section currents" aria-labelledby="mechanics-title">
+		<div class="wrap">
+			<div class="currents__board">
+				<div class="currents__page">
+					<div class="currents__head">
+						<h2 id="mechanics-title" class="currents__title">{s.mechanicsTitle}</h2>
+						<p>{s.mechanicsIntro}</p>
+					</div>
+					<ul class="factions">
+						{s.factions.map((f) => (
+							<li class={`faction faction--${f.key}`}>
+								<img class="faction__emblem" src={`/icons/factions/${f.key}.webp`} alt="" width="158" height="144" loading="lazy" />
+								<h3>{f.name}</h3>
+								<p>{f.text}</p>
+							</li>
+						))}
+					</ul>
+					<div class="currents__outro">
+						<p>{s.mechanicsOutro[0]}</p>
+						<p class="currents__warning">
+							<img src="/icons/factions/visionaries.webp" alt="" width="158" height="144" loading="lazy" />
+							<span>{s.mechanicsWarning}</span>
+						</p>
+					</div>
+					<p class="currents__question">{s.mechanicsOutro[1]}</p>
+				</div>
+			</div>
 		</div>
 	</section>
 
@@ -126,7 +214,7 @@ const latest = (await getNotes(lang)).slice(0, 2);
 	<section class="section section--wood cta">
 		<div class="wrap">
 			<h2>{s.ctaTitle}</h2>
-			<div class="hero__actions">
+			<div class="cta__actions">
 				<a class="btn btn--leaf" href={r.play}>▶ {s.heroPlay}</a>
 				<a class="btn" href={r.wiki}>{s.heroWiki}</a>
 			</div>
@@ -134,117 +222,671 @@ const latest = (await getNotes(lang)).slice(0, 2);
 	</section>
 </Site>
 
+<script>
+	// Keeps the home header exactly one screen high: scales the text down until it fits.
+	function fitIntro() {
+		const card = document.querySelector<HTMLElement>('.intro__card');
+		const text = card?.querySelector<HTMLElement>('.intro__text');
+		if (!card || !text) return;
+		card.style.setProperty('--fit', '1');
+		text.style.removeProperty('overflow');
+		if (window.matchMedia('(max-width: 1100px), (max-height: 600px)').matches) return;
+		let fit = 1;
+		while (text.scrollHeight > text.clientHeight && fit > 0.72) {
+			fit -= 0.02;
+			card.style.setProperty('--fit', fit.toFixed(2));
+		}
+		// Last resort on tiny screens: let the text scroll rather than be cut.
+		if (text.scrollHeight > text.clientHeight) text.style.overflow = 'auto';
+	}
+	let fitTimer = 0;
+	window.addEventListener('resize', () => {
+		clearTimeout(fitTimer);
+		fitTimer = window.setTimeout(fitIntro, 80);
+	});
+	fitIntro();
+	document.fonts?.ready.then(fitIntro);
+	window.addEventListener('load', fitIntro);
+</script>
+
 <style>
-	/* ---------- Illustration d'accueil ---------- */
-	.hero {
-		background: linear-gradient(#bfe0f5, var(--pv-parchment-light) 70%);
-	}
-
-	.hero__art :global(img) {
-		width: 100%;
-		max-height: calc(100svh - 64px);
-		object-fit: cover;
-		object-position: 50% 0%;
-	}
-
-	.hero__panel {
+	/* ---------- En-tête : un livre ouvert d'un écran de haut ---------- */
+	/* Wooden frame (game plank) around a parchment page: text + logo on the left,
+	   the framed illustration and the play buttons on the right. On wide screens the
+	   whole card is exactly one screen high (topbar = 64px), and a small script scales
+	   the text down (--fit) if it would not fit. */
+	.intro {
+		--logo-blue: #34558f;
+		--copper: #a8663a;
+		--copper-light: #e0a872;
 		position: relative;
-		margin-top: -72px;
-		padding: 24px clamp(16px, 4vw, 40px) 22px;
-		text-align: center;
-		color: var(--pv-parchment-light);
+		padding: 16px;
+		background:
+			radial-gradient(ellipse 40% 60px at 12% 40px, rgba(255, 255, 255, 0.85), transparent 70%),
+			radial-gradient(ellipse 30% 50px at 88% 70px, rgba(255, 255, 255, 0.75), transparent 70%),
+			linear-gradient(#a9d3ef, #dcedf8 55%, var(--pv-parchment-light));
+	}
+
+	.intro__card {
+		--fit: 1;
+		height: calc(100svh - 64px - 32px);
+		min-height: 560px;
+		padding: clamp(8px, 1.2vh, 12px);
 		background: var(--pv-wood) url('/ui/plank.webp') center / cover;
 		border: 3px solid var(--pv-ink);
-		border-radius: 18px;
-		box-shadow: 0 3px 0 var(--pv-wood-light) inset, var(--pv-shadow);
-		max-width: 860px;
+		border-radius: 24px;
+		box-shadow:
+			0 3px 0 var(--pv-wood-light) inset,
+			0 8px 0 rgba(43, 29, 20, 0.35),
+			0 22px 50px rgba(43, 29, 20, 0.3);
 	}
 
-	.hero__tagline {
-		margin: 0 0 18px;
-		font-family: var(--pv-font-title);
-		font-size: clamp(1.35rem, 3vw, 1.9rem);
-		line-height: 1.25;
-		text-shadow: 0 2px 0 var(--pv-ink);
-	}
-
-	.hero__actions {
-		display: flex;
-		flex-wrap: wrap;
-		gap: 14px;
-		justify-content: center;
-	}
-
-	.hero__meta {
-		margin: 16px 0 0;
-		font-size: 0.95rem;
-		font-weight: 700;
-		color: var(--pv-parchment);
-	}
-
-	@media (max-width: 640px) {
-		.hero__panel {
-			margin-top: -24px;
-			width: calc(100% - 24px);
-		}
-		.hero__actions .btn {
-			width: 100%;
-			font-size: 1.2rem;
-		}
-	}
-
-	/* ---------- Le jeu + besoins ---------- */
-	.pitch {
+	.intro__page {
+		height: 100%;
 		display: grid;
-		grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
-		gap: 40px;
+		grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+		gap: clamp(18px, 2vw, 32px);
+		padding: clamp(14px, 2.4vh, 28px) clamp(16px, 2.2vw, 36px);
+		background:
+			radial-gradient(ellipse at 30% 0%, #fffcf3, transparent 65%),
+			radial-gradient(ellipse at 100% 100%, rgba(216, 176, 117, 0.35), transparent 55%),
+			#fbf0d9;
+		border: 3px solid var(--pv-ink);
+		border-radius: 16px;
+		box-shadow: inset 0 0 40px rgba(168, 102, 58, 0.18);
+	}
+
+	/* ----- Text page ----- */
+	.intro__text {
+		display: flex;
+		flex-direction: column;
+		min-height: 0;
+		overflow: hidden;
+		font-size: calc(clamp(0.875rem, 1.95vh, 1.3rem) * var(--fit));
+		line-height: 1.6;
+		color: var(--pv-ink);
+		scrollbar-width: thin;
+	}
+
+	.intro__head {
+		display: grid;
+		grid-template-columns: minmax(0, 0.95fr) minmax(0, 1fr);
+		gap: clamp(16px, 2vw, 32px);
+		align-items: center;
+		padding-bottom: 0.9em;
+		margin-bottom: 0.9em;
+		border-bottom: 2px dashed rgba(168, 102, 58, 0.45);
+	}
+
+	.intro__logo {
+		margin: 0;
+	}
+
+	/* Studio signature under the logo, linking to totoludies.com. */
+	.intro__brand {
+		display: flex;
+		flex-direction: column;
 		align-items: center;
 	}
 
-	.pitch__card {
-		font-size: 1.1rem;
+	.intro__studio {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.4em;
+		margin-top: 0.2em;
+		padding: 0.15em 0.6em 0.15em 0.3em;
+		border-radius: 999px;
+		font-family: var(--pv-font-title);
+		font-size: 1.05em;
+		line-height: 1;
+		color: rgb(0 13 75);
+		text-decoration: none;
+		transition: background-color 0.15s ease;
 	}
 
-	.pitch__card p {
-		margin: 0.6em 0;
+	.intro__studio:hover {
+		background: rgba(0, 13, 75, 0.08);
 	}
 
+	.intro__studio img {
+		width: auto;
+		height: 1.6em;
+	}
+
+	.intro__logo :global(img) {
+		width: 100%;
+		max-height: calc(22vh * var(--fit));
+		object-fit: contain;
+		filter: drop-shadow(0 4px 6px rgba(43, 29, 20, 0.18));
+	}
+
+	.intro__pitch p {
+		margin: 0;
+		font-size: 1.06em;
+	}
+
+	.intro__heading {
+		display: flex;
+		align-items: center;
+		gap: 0.6em;
+		margin: 0 0 0.45em;
+		font-size: 1.75em;
+		line-height: 1.1;
+		color: var(--logo-blue);
+		text-shadow: 0 2px 0 rgba(224, 168, 114, 0.55);
+	}
+
+	.intro__heading::before,
+	.intro__heading::after {
+		content: '';
+		flex: 1;
+		height: 2px;
+		background: linear-gradient(90deg, transparent, var(--copper));
+	}
+
+	.intro__heading::after {
+		background: linear-gradient(90deg, var(--copper), transparent);
+	}
+
+	.intro__heading--start::before {
+		display: none;
+	}
+
+	.intro__lore {
+		columns: 2;
+		column-gap: clamp(22px, 2.6vw, 44px);
+		column-rule: 1px solid rgba(168, 102, 58, 0.3);
+		text-align: justify;
+		hyphens: auto;
+	}
+
+	.intro__lore p {
+		margin: 0 0 0.75em;
+	}
+
+	.intro__lore > p:first-child::first-letter {
+		float: left;
+		margin: 0.06em 0.12em 0 0;
+		font-family: var(--pv-font-title);
+		font-size: 3.4em;
+		line-height: 0.8;
+		color: var(--logo-blue);
+		text-shadow: 2px 2px 0 var(--copper-light);
+	}
+
+	/* The blood line: a dark band across both columns. */
+	.intro__quote {
+		column-span: all;
+		margin: 0.2em 0 1em;
+		padding: 0.75em 1em 0.8em;
+		text-align: center;
+		font-family: var(--pv-font-title);
+		font-size: 1.2em;
+		line-height: 1.25;
+		color: var(--pv-parchment-light);
+		background:
+			radial-gradient(ellipse at 50% 120%, rgba(200, 49, 58, 0.55), transparent 70%),
+			linear-gradient(90deg, transparent, #2a1a24 12%, #2a1a24 88%, transparent);
+		border-block: 2px solid;
+		border-image: linear-gradient(90deg, transparent, var(--copper-light), transparent) 1;
+	}
+
+	.intro__quote p {
+		margin: 0;
+	}
+
+	.intro__lore .intro__blood {
+		margin-top: 0.1em;
+		font-size: 1.55em;
+		color: #ff6066;
+		text-shadow: 0 2px 0 #1a0d10, 0 0 18px rgba(255, 70, 80, 0.55);
+		letter-spacing: 0.02em;
+	}
+
+	/* ----- Illustration page ----- */
+	.intro__art {
+		display: flex;
+		flex-direction: column;
+		min-height: 0;
+		border: 3px solid var(--pv-ink);
+		border-radius: 14px;
+		overflow: hidden;
+		box-shadow: 0 5px 0 var(--pv-ink), 0 12px 24px rgba(43, 29, 20, 0.25);
+	}
+
+	.intro__frame {
+		position: relative;
+		flex: 1 1 auto;
+		min-height: 0;
+	}
+
+	.intro__frame :global(img) {
+		position: absolute;
+		inset: 0;
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		object-position: 50% 45%;
+	}
+
+	.intro__frame::after {
+		content: '';
+		position: absolute;
+		inset: 0;
+		box-shadow: inset 0 0 0 4px rgba(255, 250, 240, 0.35), inset 0 -40px 40px -20px rgba(43, 29, 20, 0.35);
+		pointer-events: none;
+	}
+
+	.intro__play {
+		flex: none;
+		display: grid;
+		gap: clamp(8px, 1.1vh, 12px);
+		padding: clamp(12px, 1.8vh, 18px) clamp(12px, 1.4vw, 18px) clamp(10px, 1.4vh, 14px);
+		background: var(--pv-wood-dark) url('/ui/plank.webp') center / cover;
+		border-top: 3px solid var(--pv-ink);
+		box-shadow: 0 3px 0 var(--pv-wood-light) inset;
+		text-align: center;
+	}
+
+	.intro__play .btn {
+		min-height: clamp(42px, 5.6vh, 54px);
+		padding: 6px 14px;
+		font-size: clamp(1.02rem, 2.1vh, 1.3rem);
+	}
+
+	.intro__play .intro__wiki {
+		color: var(--pv-wood-dark);
+		text-shadow: 0 1px 0 rgba(255, 255, 255, 0.6);
+		background: linear-gradient(#fffaf0, var(--pv-parchment) 60%, var(--pv-parchment-dark));
+		box-shadow: 0 3px 0 rgba(255, 255, 255, 0.6) inset, 0 5px 0 var(--pv-ink);
+	}
+
+	.intro__meta {
+		margin: 2px 0 0;
+		font-size: 0.88rem;
+		font-weight: 700;
+		color: var(--pv-parchment);
+		text-shadow: 0 1px 0 var(--pv-ink);
+	}
+
+	/* Narrow or short screens: natural height, illustration first, single column. */
+	@media (max-width: 1100px), (max-height: 600px) {
+		.intro__card {
+			height: auto;
+			min-height: 0;
+		}
+		.intro__page {
+			grid-template-columns: 1fr;
+		}
+		.intro__art {
+			order: -1;
+		}
+		.intro__frame {
+			aspect-ratio: 4 / 3;
+		}
+		.intro__text {
+			overflow: visible;
+			font-size: 1.05rem;
+		}
+		.intro__logo :global(img) {
+			max-height: none;
+		}
+	}
+
+	@media (max-width: 760px) {
+		.intro {
+			padding: 12px;
+		}
+		.intro__head {
+			grid-template-columns: 1fr;
+			text-align: center;
+		}
+		.intro__logo {
+			max-width: 420px;
+			margin-inline: auto;
+		}
+		.intro__heading--start::before {
+			display: block;
+		}
+		.intro__lore {
+			columns: 1;
+			text-align: left;
+		}
+		.intro__frame {
+			aspect-ratio: 1;
+		}
+	}
+
+	/* ---------- Ressources et besoins ---------- */
+	.economy {
+		display: grid;
+		grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+		gap: 28px;
+		align-items: start;
+	}
+
+	.economy__block {
+		padding: 24px clamp(18px, 3vw, 28px);
+		background: #fffaf0;
+		border: 3px solid var(--pv-ink);
+		border-radius: var(--pv-radius);
+		box-shadow: 0 5px 0 var(--pv-ink);
+	}
+
+	.economy__block > h3 {
+		margin-bottom: 16px;
+		color: var(--pv-wood-dark);
+	}
+
+	.resources,
 	.needs {
 		list-style: none;
 		margin: 0;
 		padding: 0;
 		display: grid;
-		gap: 18px;
+		gap: 16px;
 	}
 
+	.resources {
+		grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr));
+	}
+
+	.resource,
 	.need {
 		display: flex;
-		gap: 16px;
+		gap: 14px;
 		align-items: center;
 	}
 
+	.resource img,
 	.need img {
 		flex: none;
-		width: 72px;
-		height: 72px;
 		object-fit: contain;
 		filter: drop-shadow(0 3px 0 rgba(43, 29, 20, 0.2));
 	}
 
-	.need h3 {
+	.resource img {
+		width: 56px;
+		height: 56px;
+	}
+
+	.need img {
+		width: 64px;
+		height: 64px;
+	}
+
+	.resource h4,
+	.need h4 {
 		margin: 0;
-		font-size: 1.4rem;
+		font-family: var(--pv-font-title);
+		font-weight: normal;
+		font-size: 1.25rem;
+		line-height: 1.2;
 		color: var(--pv-wood-dark);
 	}
 
+	.resource p,
 	.need p {
+		margin: 0;
+		font-size: 0.97rem;
+		line-height: 1.45;
+		color: var(--pv-ink-soft);
+	}
+
+	.economy__tip {
+		margin: 20px 0 0;
+		padding: 10px 14px;
+		font-weight: 700;
+		background: #fdf0c8;
+		border: 2px dashed var(--pv-wood-light);
+		border-radius: 10px;
+	}
+
+	@media (max-width: 860px) {
+		.economy {
+			grid-template-columns: 1fr;
+		}
+	}
+
+	/* ---------- Mécaniques : les quatre courants de pensée ---------- */
+	/* Same wooden board + parchment page as the header; one card per current, with its emblem. */
+	.currents {
+		--logo-blue: #34558f;
+		--copper: #a8663a;
+		--copper-light: #e0a872;
+		background: linear-gradient(var(--pv-parchment-light), #f1dcb4);
+	}
+
+	.currents .wrap {
+		width: min(1360px, 100% - 32px);
+	}
+
+	.currents__board {
+		padding: 12px;
+		background: var(--pv-wood) url('/ui/plank.webp') center / cover;
+		border: 3px solid var(--pv-ink);
+		border-radius: 24px;
+		box-shadow:
+			0 3px 0 var(--pv-wood-light) inset,
+			0 8px 0 rgba(43, 29, 20, 0.35),
+			0 22px 50px rgba(43, 29, 20, 0.25);
+	}
+
+	.currents__page {
+		padding: clamp(24px, 4vw, 48px) clamp(16px, 3vw, 44px) clamp(20px, 3vw, 36px);
+		background:
+			radial-gradient(ellipse at 50% 0%, #fffcf3, transparent 60%),
+			radial-gradient(ellipse at 100% 100%, rgba(216, 176, 117, 0.35), transparent 55%),
+			#fbf0d9;
+		border: 3px solid var(--pv-ink);
+		border-radius: 16px;
+		box-shadow: inset 0 0 40px rgba(168, 102, 58, 0.18);
+	}
+
+	.currents__head {
+		max-width: 760px;
+		margin: 0 auto clamp(56px, 6vw, 72px);
+		text-align: center;
+		font-size: 1.1rem;
+	}
+
+	.currents__head p {
 		margin: 0;
 		color: var(--pv-ink-soft);
 	}
 
-	@media (max-width: 860px) {
-		.pitch {
+	.currents__title {
+		display: flex;
+		align-items: center;
+		gap: 0.5em;
+		margin-bottom: 0.4em;
+		color: var(--logo-blue);
+		text-shadow: 0 3px 0 rgba(224, 168, 114, 0.55);
+	}
+
+	.currents__title::before,
+	.currents__title::after {
+		content: '';
+		flex: 1;
+		height: 2px;
+		background: linear-gradient(90deg, transparent, var(--copper));
+	}
+
+	.currents__title::after {
+		background: linear-gradient(90deg, var(--copper), transparent);
+	}
+
+	.factions {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+		display: grid;
+		grid-template-columns: repeat(4, minmax(0, 1fr));
+		gap: clamp(16px, 2vw, 28px) clamp(14px, 1.8vw, 24px);
+	}
+
+	.faction {
+		position: relative;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		padding: 58px 20px 22px;
+		text-align: center;
+		background:
+			radial-gradient(ellipse 90% 70% at 50% 0%, var(--tint), transparent 75%),
+			#fffaf0;
+		border: 3px solid var(--pv-ink);
+		border-radius: 18px;
+		box-shadow: 0 5px 0 var(--pv-ink), 0 12px 22px rgba(43, 29, 20, 0.12);
+		transition: transform 0.18s ease, box-shadow 0.18s ease;
+	}
+
+	.faction::after {
+		content: '';
+		position: absolute;
+		left: 18%;
+		right: 18%;
+		bottom: -3px;
+		height: 6px;
+		background: var(--accent);
+		border: 2px solid var(--pv-ink);
+		border-radius: 6px 6px 0 0;
+		border-bottom: 0;
+	}
+
+	.faction:hover {
+		transform: translateY(-4px);
+		box-shadow: 0 9px 0 var(--pv-ink), 0 18px 28px rgba(43, 29, 20, 0.16);
+	}
+
+	.faction__emblem {
+		position: absolute;
+		top: -42px;
+		left: 50%;
+		width: 88px;
+		height: auto;
+		translate: -50% 0;
+		filter: drop-shadow(0 4px 0 rgba(43, 29, 20, 0.25));
+		transition: rotate 0.25s ease, scale 0.25s ease;
+	}
+
+	.faction:hover .faction__emblem {
+		rotate: -6deg;
+		scale: 1.06;
+	}
+
+	.faction h3 {
+		margin: 0 0 0.35em;
+		font-size: clamp(1.35rem, 1.9vw, 1.6rem);
+		color: var(--accent);
+		text-shadow: 0 2px 0 rgba(255, 255, 255, 0.8);
+		text-wrap: balance;
+	}
+
+	.faction h3::after {
+		content: '';
+		display: block;
+		width: 48px;
+		height: 3px;
+		margin: 0.35em auto 0;
+		background: var(--accent);
+		border-radius: 3px;
+		opacity: 0.6;
+	}
+
+	.faction p {
+		margin: 0;
+		font-size: 1.04rem;
+		line-height: 1.55;
+		color: var(--pv-ink-soft);
+	}
+
+	.faction--deists {
+		--accent: #34558f;
+		--tint: #d8e3f5;
+	}
+	.faction--liberals {
+		--accent: #96700f;
+		--tint: #fbeab0;
+	}
+	.faction--bayesians {
+		--accent: #3d7a3a;
+		--tint: #d8edcf;
+	}
+	.faction--visionaries {
+		--accent: #a8352c;
+		--tint: #f6d6cf;
+	}
+
+	.currents__outro {
+		max-width: 780px;
+		margin: clamp(32px, 4vw, 48px) auto 0;
+		text-align: center;
+		font-size: 1.1rem;
+	}
+
+	.currents__outro p {
+		margin: 0;
+	}
+
+	.currents__warning {
+		display: inline-flex;
+		align-items: center;
+		gap: 12px;
+		margin-top: 18px !important;
+		padding: 8px 18px 8px 10px;
+		font-weight: 800;
+		color: #8f2b23;
+		background: #f8ddd6;
+		border: 2px solid #a8352c;
+		border-radius: 999px;
+	}
+
+	.currents__warning img {
+		width: 34px;
+		height: auto;
+		flex: none;
+	}
+
+	/* The final question, in the same dark band as the header's blood line. */
+	.currents__question {
+		margin: clamp(26px, 3vw, 36px) 0 0;
+		padding: 0.8em 1em;
+		text-align: center;
+		font-family: var(--pv-font-title);
+		font-size: clamp(1.3rem, 2.4vw, 1.75rem);
+		line-height: 1.3;
+		text-wrap: balance;
+		color: #ffd27a;
+		text-shadow: 0 2px 0 #1a0d10, 0 0 16px rgba(255, 190, 90, 0.35);
+		background:
+			radial-gradient(ellipse at 50% 120%, rgba(200, 49, 58, 0.5), transparent 70%),
+			linear-gradient(90deg, transparent, #2a1a24 12%, #2a1a24 88%, transparent);
+		border-block: 2px solid;
+		border-image: linear-gradient(90deg, transparent, var(--copper-light), transparent) 1;
+	}
+
+	@media (max-width: 1100px) {
+		.factions {
+			grid-template-columns: repeat(2, minmax(0, 1fr));
+			row-gap: 64px;
+		}
+	}
+
+	@media (max-width: 600px) {
+		.currents .wrap {
+			width: calc(100% - 24px);
+		}
+		.currents__board {
+			padding: 8px;
+		}
+		.factions {
 			grid-template-columns: 1fr;
+			row-gap: 60px;
+		}
+		.currents__warning {
+			border-radius: 16px;
+			text-align: left;
 		}
 	}
 
@@ -416,5 +1058,12 @@ const latest = (await getNotes(lang)).slice(0, 2);
 	/* ---------- Appel final ---------- */
 	.cta {
 		text-align: center;
+	}
+
+	.cta__actions {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 14px;
+		justify-content: center;
 	}
 </style>
