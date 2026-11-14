@@ -18,6 +18,8 @@ const ADULT_YEARS = 4;
 /** A child takes quicker steps (1 / growth), capped like the game's MAX_STEP_SPEED. */
 const MAX_STEP_SPEED = 2.5;
 const STEP_CLIPS = new Set(['Walk', 'Carry']);
+/** Hair and iris are a light gray in the model: the game multiplies them by colour / TINT_GRAY (ADR 0135). */
+const TINT_GRAY = 0.85;
 
 function growth(years: number): number {
 	return BIRTH_SIZE + (1 - BIRTH_SIZE) * Math.min(Math.max(years / ADULT_YEARS, 0), 1);
@@ -98,6 +100,8 @@ class Viewer {
 	/** Position of the model on the ground at adult size (scaled with the age). */
 	private offset = new THREE.Vector3();
 	private growth = 1;
+	/** Chosen sRGB colour per material part ('Hair', 'Eyes'). */
+	private tints = new Map<string, number[]>();
 
 	constructor(el: HTMLElement) {
 		this.el = el;
@@ -155,6 +159,18 @@ class Viewer {
 			this.setAutoRotate(!this.controls.autoRotate),
 		);
 		el.querySelector<HTMLButtonElement>('[data-reset]')?.addEventListener('click', () => this.resetView());
+		el.querySelectorAll<HTMLButtonElement>('[data-part]').forEach((b) => {
+			const part = b.dataset.part!;
+			const pick = () => {
+				this.tints.set(part, b.dataset.tint!.split(',').map(Number));
+				this.applyTints();
+			};
+			if (b.getAttribute('aria-pressed') === 'true') pick();
+			b.addEventListener('click', () => {
+				el.querySelectorAll(`[data-part="${part}"]`).forEach((x) => x.setAttribute('aria-pressed', String(x === b)));
+				pick();
+			});
+		});
 		const age = el.querySelector<HTMLInputElement>('[data-age]');
 		if (age) {
 			const update = () => this.setAge(Number(age.value));
@@ -172,6 +188,27 @@ class Viewer {
 		const out = this.el.querySelector('[data-age-value]');
 		if (out) out.textContent = label;
 		this.applyGrowth();
+	}
+
+	/** Tints the materials named after a part (hair, eyes) with the chosen colour. */
+	private applyTints() {
+		if (!this.model || !this.tints.size) return;
+		this.model.traverse((o) => {
+			const mesh = o as THREE.Mesh;
+			if (!mesh.isMesh) return;
+			for (const m of Array.isArray(mesh.material) ? mesh.material : [mesh.material]) {
+				for (const [part, c] of this.tints) {
+					if (m.name.includes(part)) {
+						(m as THREE.MeshToonMaterial).color.setRGB(
+							c[0] / TINT_GRAY,
+							c[1] / TINT_GRAY,
+							c[2] / TINT_GRAY,
+							THREE.SRGBColorSpace,
+						);
+					}
+				}
+			}
+		});
 	}
 
 	/** Scales the model around its feet and speeds up the steps of a child. */
@@ -258,6 +295,7 @@ class Viewer {
 		this.scene.add(model);
 		this.model = model;
 		this.applyGrowth();
+		this.applyTints();
 
 		const radius = Math.max(size.x, size.y, size.z) * 0.5;
 		const height = size.y;

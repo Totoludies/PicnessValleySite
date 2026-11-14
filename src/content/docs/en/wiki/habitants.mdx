@@ -9,7 +9,7 @@ import Model3D from '../../../../components/Model3D.astro';
 
 Each villager has their own name, height and character. They live their life on their own: you give them a job or an order, they take care of the rest. Their outfit depends on their [school of thought](/en/wiki/factions/), picked at random at birth.
 
-One villager in two is a woman: she wears the same outfit, with a bust and long hair. Pick the school and the sex in the viewer.
+One villager in two is a woman: she wears the same outfit, with a bust and long hair. Each villager also has their own hair colour (black, brown, blond or blue) and eye colour (black, brown, blue or green), picked at random whatever their school. Pick the school, the sex and the colours in the viewer.
 
 The starting villagers are 18 to 30 years old. A villager born in a house starts at 0, a quarter of an adult's height, and grows until 4, trotting along with quick little steps. A child does not work: their card shows "Child" instead of a job. The viewer's age slider shows them at any age.
 
@@ -25,6 +25,7 @@ The starting villagers are 18 to 30 years old. A villager born in a house starts
 		{ suffix: '', label: 'Man', icon: '/icons/sex/male.webp' },
 		{ suffix: '-female', label: 'Woman', icon: '/icons/sex/female.webp' },
 	]}
+	colors
 	age
 />
 

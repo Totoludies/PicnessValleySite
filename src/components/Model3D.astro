@@ -6,6 +6,7 @@
 // `toggles` ajoute un second choix qui se combine au premier : son suffixe s'ajoute au nom du fichier
 // (ex. villager-blue + '-female' = villager-blue-female.glb).
 // `age` ajoute un curseur d'âge (habitants) : taille et cadence des pas d'un enfant, comme dans le jeu (ADR 0133).
+// `colors` ajoute les couleurs des cheveux et des yeux (habitants, ADR 0135 du jeu).
 interface Variant {
 	src: string;
 	label: string;
@@ -25,10 +26,19 @@ interface Props {
 	toggles?: Toggle[];
 	/** Shows an age slider (villagers only). */
 	age?: boolean;
+	/** Shows the hair and eye colours (villagers only). */
+	colors?: boolean;
 	caption?: string;
 }
 
-const { title, src, variants = [], toggles = [], age = false, caption } = Astro.props;
+const { title, src, variants = [], toggles = [], age = false, colors = false, caption } = Astro.props;
+/** Hair and eye colours of the villagers, as in the game (TownVillagerColors, sRGB), in the same order. */
+const HAIR_COLORS = [[0.13, 0.11, 0.11], [0.37, 0.25, 0.17], [0.86, 0.68, 0.36], [0.22, 0.4, 0.66]];
+const EYE_COLORS = [[0.07, 0.06, 0.07], [0.42, 0.25, 0.12], [0.2, 0.45, 0.85], [0.22, 0.58, 0.3]];
+/** Colours pressed when the page opens: brown hair, brown eyes. */
+const START_HAIR = 1;
+const START_EYES = 1;
+const css = (c: number[]) => `rgb(${c.map((v) => Math.round(v * 255)).join(' ')})`;
 /** Age shown when the page opens: an adult, like the villagers at the start of a game (18 to 30). */
 const START_AGE = 20;
 const lang = Astro.locals.starlightRoute?.locale === 'en' ? 'en' : 'fr';
@@ -44,6 +54,10 @@ const text = {
 		error: 'Le modèle 3D n’a pas pu être chargé.',
 		animations: 'Animations',
 		age: 'Âge',
+		hair: 'Cheveux',
+		eyes: 'Yeux',
+		hairNames: ['Noirs', 'Bruns', 'Blonds', 'Bleus'],
+		eyeNames: ['Noirs', 'Marron', 'Bleus', 'Verts'],
 		years: ['{0} an', '{0} ans'],
 		child: 'enfant, {0} % de sa taille',
 		clips: {
@@ -68,6 +82,10 @@ const text = {
 		error: 'The 3D model could not be loaded.',
 		animations: 'Animations',
 		age: 'Age',
+		hair: 'Hair',
+		eyes: 'Eyes',
+		hairNames: ['Black', 'Brown', 'Blond', 'Blue'],
+		eyeNames: ['Black', 'Brown', 'Blue', 'Green'],
 		years: ['{0} year', '{0} years'],
 		child: 'child, {0}% of adult height',
 		clips: {
@@ -137,6 +155,32 @@ const text = {
 		<p class="pv-model__hint">{text.hint}</p>
 	</div>
 	<div class="pv-model__clips" role="group" aria-label={text.animations} hidden></div>
+	{
+		colors && (
+			<div class="pv-model__colors">
+				{[
+					{ part: 'Hair', name: text.hair, list: HAIR_COLORS, names: text.hairNames, start: START_HAIR },
+					{ part: 'Eyes', name: text.eyes, list: EYE_COLORS, names: text.eyeNames, start: START_EYES },
+				].map((g) => (
+					<div class="pv-model__swatches" role="group" aria-label={g.name}>
+						<span class="pv-model__swatches-name">{g.name}</span>
+						{g.list.map((c, i) => (
+							<button
+								type="button"
+								class="pv-model__swatch"
+								data-part={g.part}
+								data-tint={c.join(',')}
+								aria-pressed={String(i === g.start)}
+								aria-label={g.names[i]}
+								title={g.names[i]}
+								style={`--swatch: ${css(c)}`}
+							/>
+						))}
+					</div>
+				))}
+			</div>
+		)
+	}
 	{
 		age && (
 			<label class="pv-model__age">
@@ -360,6 +404,46 @@ const text = {
 	.pv-model__toggle:active {
 		translate: 0 2px;
 		box-shadow: 0 1px 0 var(--pv-ink);
+	}
+
+	.pv-model__colors {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 8px 22px;
+		margin: 10px 4px 0;
+	}
+
+	.pv-model__swatches {
+		display: flex;
+		align-items: center;
+		gap: 6px;
+	}
+
+	.pv-model__swatches-name {
+		min-width: 4.2em;
+		font-weight: 800;
+		color: var(--pv-parchment-light);
+		text-shadow: 0 1px 0 var(--pv-ink);
+	}
+
+	.pv-model__swatch {
+		width: 28px;
+		height: 28px;
+		padding: 0;
+		background: var(--swatch);
+		border: 2px solid var(--pv-ink);
+		border-radius: 50%;
+		box-shadow: inset 0 -4px 0 rgba(0, 0, 0, 0.22), inset 0 3px 0 rgba(255, 255, 255, 0.25), 0 2px 0 var(--pv-ink);
+		cursor: pointer;
+	}
+
+	.pv-model__swatch[aria-pressed='true'] {
+		outline: 3px solid var(--pv-leaf-light);
+		outline-offset: 2px;
+	}
+
+	.pv-model__swatch:active {
+		translate: 0 2px;
 	}
 
 	.pv-model__age {

@@ -35,7 +35,18 @@ for f in "$TMP"/*.glb; do
 	name="$(basename "$f")"
 	# The dragon's texture is already WebP: re-encoding it fails, so it is kept as is.
 	tex=webp; [ "$name" = dragon.glb ] && tex=false
-	npx -y @gltf-transform/cli@4.2.1 optimize "$f" "$OUT/$name" --compress meshopt --simplify false --texture-compress "$tex" > /dev/null
+	case "$name" in
+	villager-*)
+		# "optimize" merges identical materials (dedup): the viewer needs the villagers' Hair and Eyes
+		# materials to tint them (ADR 0135 of the game), so they get the same steps without the merge.
+		npx -y @gltf-transform/cli@4.2.1 resample "$f" "$f.r.glb" > /dev/null
+		npx -y @gltf-transform/cli@4.2.1 prune "$f.r.glb" "$f.p.glb" > /dev/null
+		npx -y @gltf-transform/cli@4.2.1 meshopt "$f.p.glb" "$OUT/$name" > /dev/null
+		;;
+	*)
+		npx -y @gltf-transform/cli@4.2.1 optimize "$f" "$OUT/$name" --compress meshopt --simplify false --texture-compress "$tex" > /dev/null
+		;;
+	esac
 	echo "$OUT/$name"
 done
 rm -rf "$TMP"
