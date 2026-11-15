@@ -130,8 +130,11 @@ const latest = (await getNotes(lang)).slice(0, 2);
 						{s.factions.map((f) => (
 							<li class={`faction faction--${f.key}`}>
 								<img class="faction__emblem" src={`/icons/factions/${f.key}.webp`} alt="" width="158" height="144" loading="lazy" />
-								<h3>{f.name}</h3>
-								<p>{f.text}</p>
+								<img class="faction__character" src={`/characters/${f.key}.webp`} alt="" width="163" height="440" loading="lazy" />
+								<div class="faction__body">
+									<h3>{f.name}</h3>
+									<p>{f.text}</p>
+								</div>
 							</li>
 						))}
 					</ul>
@@ -686,16 +689,17 @@ const latest = (await getNotes(lang)).slice(0, 2);
 		margin: 0;
 		padding: 0;
 		display: grid;
-		grid-template-columns: repeat(4, minmax(0, 1fr));
-		gap: clamp(16px, 2vw, 28px) clamp(14px, 1.8vw, 24px);
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		gap: 68px clamp(14px, 1.8vw, 24px);
 	}
 
+	/* Villager of the school on the left, cut out; name and text on the right. */
 	.faction {
 		position: relative;
 		display: flex;
-		flex-direction: column;
 		align-items: center;
-		padding: 58px 20px 22px;
+		gap: clamp(12px, 2vw, 24px);
+		padding: 52px 24px 22px 18px;
 		text-align: center;
 		background:
 			radial-gradient(ellipse 90% 70% at 50% 0%, var(--tint), transparent 75%),
@@ -733,6 +737,18 @@ const latest = (await getNotes(lang)).slice(0, 2);
 		translate: -50% 0;
 		filter: drop-shadow(0 4px 0 rgba(43, 29, 20, 0.25));
 		transition: rotate 0.25s ease, scale 0.25s ease;
+	}
+
+	.faction__character {
+		flex: none;
+		width: auto;
+		height: 220px;
+		filter: drop-shadow(0 4px 0 rgba(43, 29, 20, 0.2));
+	}
+
+	.faction__body {
+		flex: 1;
+		min-width: 0;
 	}
 
 	.faction:hover .faction__emblem {
@@ -798,10 +814,9 @@ const latest = (await getNotes(lang)).slice(0, 2);
 		margin-top: 0.8em;
 	}
 
-	@media (max-width: 1100px) {
+	@media (max-width: 900px) {
 		.factions {
-			grid-template-columns: repeat(2, minmax(0, 1fr));
-			row-gap: 64px;
+			grid-template-columns: 1fr;
 		}
 	}
 
@@ -813,8 +828,13 @@ const latest = (await getNotes(lang)).slice(0, 2);
 			padding: 8px;
 		}
 		.factions {
-			grid-template-columns: 1fr;
 			row-gap: 60px;
+		}
+		.faction {
+			padding-inline: 12px 16px;
+		}
+		.faction__character {
+			height: 170px;
 		}
 	}
 

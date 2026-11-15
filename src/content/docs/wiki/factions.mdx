@@ -5,8 +5,6 @@ sidebar:
   order: 2
 ---
 
-import Model3D from '../../../components/Model3D.astro';
-
 Lors de votre développement, vous devez vous assurer qu'un nombre suffisant de vos habitants soient prêts à se sacrifier pour apaiser le dragon [Zebor](/wiki/dragon/). Mais chacun voit le monde à sa façon : vos habitants se rangent en **quatre courants de pensée**.
 
 Chaque courant a sa **couleur**, son **emblème** et sa **tenue**. Un habitant naît dans l'un des quatre, tiré au hasard. En jeu, quatre compteurs sous la frise des saisons donnent le nombre d'habitants vivants de chaque courant, dans l'ordre triangle bleu, flamme jaune, rond vert, carré rouge.
@@ -48,28 +46,7 @@ Chaque courant a sa **couleur**, son **emblème** et sa **tenue**. Un habitant n
 
 ## Les tenues
 
-Chaque courant a sa tenue, que l'on reconnaît de loin dans le village. Les animations sont celles du jeu : choisissez-en une sous le modèle.
-
-<Model3D
-	title="Les habitants"
-	variants={[
-		{ src: 'villager-blue', label: 'Déistes', icon: '/icons/factions/deists.webp' },
-		{ src: 'villager-yellow', label: 'Libéraux', icon: '/icons/factions/liberals.webp' },
-		{ src: 'villager-green', label: 'Bayésiens', icon: '/icons/factions/bayesians.webp' },
-		{ src: 'villager-red', label: 'Visionnaires', icon: '/icons/factions/visionaries.webp' },
-	]}
-	toggles={[
-		{ suffix: '', label: 'Homme', icon: '/icons/sex/male.webp' },
-		{ suffix: '-female', label: 'Femme', icon: '/icons/sex/female.webp' },
-	]}
-	hairstyles={{
-		'': ['Courts', 'Rasés', 'Mi-longs', 'Queue de cheval'],
-		'-female': ['Longs', 'Tresses', 'Carré', 'Chignon'],
-	}}
-	colors
-	age
-	caption="Repos, marche, porter, construire, couper, creuser à la pelle et mort : les sept animations des habitants."
-/>
+Chaque courant a sa tenue, que l'on reconnaît de loin dans le village. Pour les voir en 3D et animées, ouvrez la page [Les habitants](/wiki/habitants/).
 
 | Courant | Tenue |
 |---|---|
