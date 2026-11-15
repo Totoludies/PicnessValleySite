@@ -55,9 +55,9 @@ for (const [from, to, width] of images) {
 	console.log('✓', to);
 }
 
-// Favicon : les baies du jeu en PNG 64 px.
-await sharp(join(game, `${items}/TownBerry.png`)).resize(64).png().toFile(join(site, 'public/favicon.png'));
+// Favicon : les quatre courants (src/assets/source/favicon-currents.png), fond rendu transparent,
+// déjà en place dans public/favicon.png : ce script ne le régénère plus.
 // Police du jeu, copiée telle quelle.
 await mkdir(join(site, 'public/fonts'), { recursive: true });
 await copyFile(join(game, 'Assets/PicnessValley/UI/Fonts/PicnessValley-Regular.ttf'), join(site, 'public/fonts/PicnessValley-Regular.ttf'));
-console.log('✓ favicon et police');
+console.log('✓ police');
