@@ -108,11 +108,9 @@
         document.getElementsByTagName('head')[0].appendChild(meta);
         document.querySelector("#unity-container").className = "unity-mobile";
         canvas.className = "unity-mobile";
-      } else {
-        // Desktop style: the game canvas in a window that can be maximized to fullscreen
-        fullscreenContainer.style.width = "960px";
-        fullscreenContainer.style.height = "600px";
       }
+      // Desktop style: the canvas fills the window above the footer (style.css), so the page
+      // never scrolls, in a browser tab as in the website's frame.
 
       var script = document.createElement("script");
       script.src = loaderUrl;

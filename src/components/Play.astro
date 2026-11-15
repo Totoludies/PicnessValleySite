@@ -41,6 +41,33 @@ const r = routes[lang];
 	</section>
 </Site>
 
+<script>
+	// Sizes the game frame to the room it has: a 16:9 game area plus the game's 38 px footer,
+	// never taller than the window. The game page fills its frame, so no scrollbar can appear.
+	const FOOTER = 38;
+	const BORDER = 8;
+	const frame = document.querySelector<HTMLElement>('.play__frame');
+	if (frame) {
+		const fit = () => {
+			const parent = frame.parentElement!;
+			const style = getComputedStyle(parent);
+			const available = parent.clientWidth - parseFloat(style.paddingLeft) - parseFloat(style.paddingRight);
+			let width = available;
+			let height = (width - BORDER) * 9 / 16 + FOOTER + BORDER;
+			const limit = Math.max(320, window.innerHeight - 32);
+			if (height > limit) {
+				height = limit;
+				width = Math.min(available, (height - FOOTER - BORDER) * 16 / 9 + BORDER);
+			}
+			frame.style.width = `${Math.floor(width)}px`;
+			frame.style.height = `${Math.floor(height)}px`;
+		};
+		fit();
+		window.addEventListener('resize', fit);
+		new ResizeObserver(fit).observe(frame.parentElement!);
+	}
+</script>
+
 <style>
 	.play {
 		padding-block: 24px 80px;

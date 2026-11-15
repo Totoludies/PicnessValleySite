@@ -1,9 +1,9 @@
+/* The page always fills its window (browser tab or the website's frame) and never scrolls:
+   the canvas takes all the room left above the footer, whatever the window size. */
+html, body { width: 100%; height: 100%; overflow: hidden }
 body { padding: 0; margin: 0; background: #ffffff }
-#unity-container { position: absolute }
-#unity-container.unity-desktop { left: 50%; top: 50%; transform: translate(-50%, -50%) }
-#unity-container.unity-mobile { position: fixed; width: 100%; height: 100% }
-.unity-mobile #unity-fullscreen-container { width: 100%; height: 100% }
-#unity-fullscreen-container { position: relative; }
+#unity-container { position: fixed; inset: 0; display: flex; flex-direction: column }
+#unity-fullscreen-container { position: relative; flex: 1 1 auto; min-height: 0 }
 /* white like the Totoludies screen, the canvas is never black before the first frame */
 #unity-canvas { position: absolute; width: 100%; height: 100%; background: #ffffff }
 
@@ -13,7 +13,7 @@ body { padding: 0; margin: 0; background: #ffffff }
 #town-gauge { position: absolute; left: 50%; top: 64%; transform: translateX(-50%); width: 40%; max-width: 420px; min-width: 160px; height: 12px; box-sizing: border-box; border: 2px solid rgb(0, 13, 75); border-radius: 6px; background: #ffffff; overflow: hidden }
 #town-gauge-fill { width: 0%; height: 100%; background: rgb(0, 13, 75); transition: width 0.25s linear }
 
-#unity-footer { position: relative; height: 38px }
+#unity-footer { position: relative; flex: 0 0 38px; height: 38px }
 .unity-mobile #unity-footer { display: none }
 #unity-build-title { float: right; margin-right: 10px; line-height: 38px; font-family: arial; font-size: 18px; color: rgb(0, 13, 75) }
 #unity-fullscreen-button { cursor:pointer; float: right; width: 38px; height: 38px; background: url('fullscreen-button.png') no-repeat center }
