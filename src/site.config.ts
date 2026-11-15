@@ -9,4 +9,4 @@
 export const PLAY_URL: string | null = '/play/index.html';
 
 /** Version actuelle du jeu (Version.json du jeu : code 0.N = dernier ADR). */
-export const GAME_VERSION = '0.131';
+export const GAME_VERSION = '0.140';
